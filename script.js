@@ -16,7 +16,28 @@ function runFrame(){
 
 class tetrimino{
     constructor(type){
-        this.shape = type;
+        switch(type){
+            case 0:
+                this.shape = [0,0,0,1,0,2,0,3]; // Line Block
+                break;
+            case 1:
+                this.shape = [0,0,0,1,0,2,1,2]; // L Block
+                break;
+            case 2:
+                this.shape = [1,1,1,1,1,2,0,2]; // Inverse L Block
+                break;
+            case 3:
+                this.shape = [0,0,0,1,0,2,1,1]; // T Block
+                break;
+            case 4:
+                this.shape = [0,0,0,1,1,1,1,2]; // Z Block
+                break;
+            case 5:
+                this.shape = [1,0,1,1,0,1,0,2]; // Inverse Z Block
+                break;
+            case 6:
+                this.shape = [0,0,0,1,1,0,1,1]; // Square Block
+        }
         this.state = 3;
         this.x = 10;
         this.y = 0;
