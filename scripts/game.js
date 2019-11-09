@@ -42,7 +42,7 @@ document.addEventListener("keydown",function(event){
 function runFrame(){
     game.width = window.innerWidth; //set game window size to browser window size
     game.height = window.innerHeight;
-    blockSize = game.width / 50; //make the width of a 1x1 space the width of the window / 50.
+    blockSize = game.width / (gridWidth+40); //make the width of a 1x1 space the width of the window / 50.
     ctx.fillStyle = "#003366";
     ctx.fillRect(0,0,game.width,game.height);
     ctx.fillStyle = "#000000";
@@ -87,7 +87,7 @@ class tetrimino{
     draw(){
         ctx.save();
         if(this.state == 1){ // We're in the menu. The block should be drawn to the right of the game window
-            ctx.translate(blockSize*(14+game.width), game.height-15*blockSize);
+            ctx.translate(blockSize*(14+gridWidth), game.height-15*blockSize);
         }
         else if(this.state == 0){
             ctx.translate(blockSize*(12+this.x), game.height-blockSize*(gridHeight-this.y));
