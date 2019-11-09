@@ -61,6 +61,7 @@ function runFrame(){
             }
         }
     }
+    clearLines();
 }
 
 class tetrimino{
@@ -69,37 +70,37 @@ class tetrimino{
             case 0:
                 this.shape = [0,0,0,1,0,2,0,3]; // Line Block
                 this.color = "cyan";
-                this.center = [0,1.5];
+                this.center = [0,2];
                 break;
             case 1:
                 this.shape = [0,0,0,1,0,2,1,2]; // L Block
                 this.color = "blue";
-                this.center = [0.5,1];
+                this.center = [1,2];
                 break;
             case 2:
                 this.shape = [1,0,1,1,1,2,0,2]; // Inverse L Block
                 this.color = "orange";
-                this.center = [0.5,1];
+                this.center = [1,2];
                 break;
             case 3:
                 this.shape = [0,0,0,1,0,2,1,1]; // T Block
                 this.color = "purple";
-                this.center = [0.5,1];
+                this.center = [1,2];
                 break;
             case 4:
                 this.shape = [0,0,0,1,1,1,1,2]; // Z Block
                 this.color = "green";
-                this.center = [0.5,1];
+                this.center = [1,2];
                 break;
             case 5:
                 this.shape = [1,0,1,1,0,1,0,2]; // Inverse Z Block
                 this.color = "red";
-                this.center = [0.5,1];
+                this.center = [1,2];
                 break;
             case 6:
                 this.shape = [0,0,0,1,1,0,1,1]; // Square Block
                 this.color = "yellow";
-                this.center = [0.5,0.5];
+                this.center = [1,1];
                 break;
             default:
                 break;
@@ -166,29 +167,29 @@ class tetrimino{
     }
     rotate(){
         for(var i = 0; i < this.shape.length/2; i++){
-            var rotatedCoords = getRotatedCoords(this.shape[i], this.shape[i+1], this.center[0], this.center[1]);
+            var rotatedCoords = getRotatedCoords(this.shape[i*2], this.shape[i*2+1], this.center[0], this.center[1]);
             if(grid[rotatedCoords[0]+this.x][rotatedCoords[1]+this.y] != 0){
                 rotateUp();
                 return;
             }
         }
         for(var i = 0; i < this.shape.length/2; i++){
-            var rotatedCoords = getRotatedCoords(this.shape[i], this.shape[i+1], this.center[0], this.center[1]);
-            this.shape[i] = rotatedCoords[0];
-            this.shape[i+1] = rotatedCoords[1];
+            var rotatedCoords = getRotatedCoords(this.shape[i*2], this.shape[i*2+1], this.center[0], this.center[1]);
+            this.shape[i*2] = rotatedCoords[0];
+            this.shape[i*2+1] = rotatedCoords[1];
         }
     }
     rotateUp(){
         for(var i = 0; i < this.shape.length/2; i++){
-            var rotatedCoords = getRotatedCoords(this.shape[i], this.shape[i+1], this.center[0], this.center[1]-1);
+            var rotatedCoords = getRotatedCoords(this.shape[i*2], this.shape[i*2+1], this.center[0], this.center[1]-1);
             if(grid[rotatedCoords[0]+this.x][rotatedCoords[1]+this.y] != 0){
                 return;
             }
         }
         for(var i = 0; i < this.shape.length/2; i++){
-            var rotatedCoords = getRotatedCoords(this.shape[i], this.shape[i+1], this.center[0], this.center[1]-1);
-            this.shape[i] = rotatedCoords[0];
-            this.shape[i+1] = rotatedCoords[1];
+            var rotatedCoords = getRotatedCoords(this.shape[i*2], this.shape[i*2+1], this.center[0], this.center[1]-1);
+            this.shape[i*2] = rotatedCoords[0];
+            this.shape[i*2+1] = rotatedCoords[1];
         }
     }
 }
@@ -203,6 +204,34 @@ function remove(item){
             }
             else{
                 tetriminos = tetriminos.slice(0,i).concat(tetriminos.slice(i+1,tetriminos.length));
+            }
+        }
+    }
+}
+function getRotatedCoords(x, y, centerX, centerY){
+    var result = [];
+    result[0] = (y-centerY)+centerX;
+    result[1] = (-x+centerX)+centerY
+    return result;
+}
+function clearLines(){
+    for(var i = 0; i < grid[0].length; i++){
+        var linefull = true;
+        for(var j = 0; j < grid.length; j++){
+            if(grid[j][i] == 0){
+                linefull = false;
+            }
+        }
+        if(linefull){
+            for(var j = i; j >= 0; j--){
+                for(var k = 0; k < grid.length; k++){
+                    if(j > 0){
+                        grid[k][j] = grid[k][j-1];
+                    }
+                    else{
+                        grid[k][j] = 0;
+                    }
+                }
             }
         }
     }
