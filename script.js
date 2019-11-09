@@ -2,8 +2,8 @@ var game = document.getElementById("game");
 var ctx = game.getContext("2d");
 var blockSize;
 var loop = setInterval(runFrame, 1000/60);
-var rate = 60;
-var timeLeft = 60;
+var rate = 10;
+var timeLeft = 10;
 var tetriminos = [];
 var grid = [10];
 document.addEventListener("keydown",function(event){
@@ -99,12 +99,12 @@ class tetrimino{
             case 4:
                 this.shape = [0,0,0,1,1,1,1,2]; // Z Block
                 this.color = "green";
-                this.center = [0,2];
+                this.center = [0,1];
                 break;
             case 5:
                 this.shape = [1,0,1,1,0,1,0,2]; // Inverse Z Block
                 this.color = "red";
-                this.center = [1,2];
+                this.center = [1,1];
                 break;
             case 6:
                 this.shape = [0,0,0,1,1,0,1,1]; // Square Block
