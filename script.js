@@ -4,6 +4,29 @@ var blockSize;
 var loop = setInterval(runFrame, 1000/6);
 var tetriminos = [];
 var grid = [10];
+document.addEventListener("keydown",function(event){
+    if(event.keyCode == 37){
+        for(var i = 0; i < tetriminos.length; i++){
+            if(tetriminos[i].state == 0){
+                tetriminos[i].moveLeft();
+            }
+        }
+    }
+    if(event.keyCode == 39){
+        for(var i = 0; i < tetriminos.length; i++){
+            if(tetriminos[i].state == 0){
+                tetriminos[i].moveRight();
+            }
+        }
+    }
+    if(event.keyCode == 38){
+        for(var i = 0; i < tetriminos.length; i++){
+            if(tetriminos[i].state == 0){
+                tetriminos[i].update();
+            }
+        }
+    }
+});
 for(var i = 0; i < 10; i++){
     grid[i] = [];
     for(var j = 0; j < 20; j++){
@@ -27,7 +50,7 @@ function runFrame(){
         for(var j = 0; j < grid[i].length; j++){
             if(grid[i][j] != 0){
                 ctx.fillStyle = grid[i][j];
-                ctx.fillRect(blockSize*(12+i),gameheight-(20-j)*blockSize, blockSize, blockSize);
+                ctx.fillRect(blockSize*(12+i),game.height-(20-j)*blockSize, blockSize, blockSize);
             }
         }
     }
@@ -45,7 +68,7 @@ class tetrimino{
                 this.color = "blue";
                 break;
             case 2:
-                this.shape = [1,1,1,1,1,2,0,2]; // Inverse L Block
+                this.shape = [1,0,1,1,1,2,0,2]; // Inverse L Block
                 this.color = "orange";
                 break;
             case 3:
@@ -91,8 +114,9 @@ class tetrimino{
     update(){
         if(this.state == 0){
             for(var i = 0; i < this.shape.length/2; i++){
-                if(this.shape[i*2+1]+this.y >= 19 || grid[this.shape[i*2]+this.x][this.shape[i*2+1]+this.y] != 0){
+                if(this.shape[i*2+1]+this.y >= 19 || grid[this.shape[i*2]+this.x][this.shape[i*2+1]+this.y+1] != 0){
                     this.settle(); // if the space below isn't empty, settle the block where it is.
+                    return;
                 }
             }
             this.y++;
@@ -101,14 +125,30 @@ class tetrimino{
     settle(){
         for(var i = 0; i < this.shape.length/2; i++){
             grid[this.shape[i*2]+this.x][this.shape[i*2+1]+this.y] = this.color;
-            remove(this);
-            for(var j = 0; j < tetriminos.length; j++){
-                if(tetriminos[j].state == 1){
-                    tetriminos[j].state = 0;
-                }
-            }
-            tetriminos.push(new tetrimino(Math.floor(Math.random()*7)));
         }
+        remove(this);
+        for(var j = 0; j < tetriminos.length; j++){
+            if(tetriminos[j].state == 1){
+                tetriminos[j].state = 0;
+            }
+        }
+        tetriminos.push(new tetrimino(Math.floor(Math.random()*7)));
+    }
+    moveLeft(){
+        for(var i = 0; i < this.shape.length/2; i++){
+            if((this.shape[i*2]+this.x <= 0 || grid[this.shape[i*2]+this.x-1][this.shape[i*2+1]+this.y] != 0)){
+                return;
+            }
+        }
+        this.x--;
+    }
+    moveRight(){
+        for(var i = 0; i < this.shape.length/2; i++){
+            if((this.shape[i*2]+this.x >= 10 || grid[this.shape[i*2]+this.x+1][this.shape[i*2+1]+this.y] != 0)){
+                return;
+            }
+        }
+        this.x++;
     }
 }
 tetriminos.push(new tetrimino(Math.floor(Math.random()*7)));
@@ -117,7 +157,12 @@ tetriminos[0].state = 0;
 function remove(item){
     for(var i = 0; i < tetriminos.length; i++){
         if(tetriminos[i] == item){
-            tetriminos = tetriminos.slice(0,i-1).concat(tetriminos.slice(i+1,tetriminos.length));
+            if(i == 0){
+                tetriminos = tetriminos.slice(i + 1, tetriminos.length);
+            }
+            else{
+                tetriminos = tetriminos.slice(0,i).concat(tetriminos.slice(i+1,tetriminos.length));
+            }
         }
     }
 }
