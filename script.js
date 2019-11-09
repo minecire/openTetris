@@ -3,6 +3,7 @@ var ctx = game.getContext("2d");
 var blockSize;
 var loop = setInterval(runFrame, 1000/60);
 var tetriminos = [];
+var grid = [10][20] = 0;
 
 function runFrame(){
     game.width = window.innerWidth; //set game window size to browser window size
@@ -14,6 +15,15 @@ function runFrame(){
     ctx.fillRect(blockSize*12, game.height-20*blockSize, blockSize*10, blockSize*20);
     for(var i = 0; i < tetriminos.length; i++){
         tetriminos[i].draw();
+        tetriminos[i].update();
+    }
+    for(var i = 0; i < grid.length; i++){
+        for(var j = 0; j < grid[i].length; j++){
+            if(grid[i][j] != 0){
+                ctx.fillStyle = grid[i][j];
+                ctx.fillRect(blockSize*(12+i),gameheight-(20-j)*blockSize, blockSize, blockSize);
+            }
+        }
     }
 }
 
@@ -51,7 +61,7 @@ class tetrimino{
             default:
                 break;
         }
-        this.state = 2; //State 2 = menu, 1 = in game falling, 0 = in game still, 3 = hold
+        this.state = 1; //State 1 = menu, 0 = in game falling, 2 = hold
         this.x = 4; //X Position is centered from the 0-9 range, since the width of each block other than line is 2 and 4 is to the left of center, blocks go right
         this.y = 0; //Y Position on top
     }
@@ -63,11 +73,42 @@ class tetrimino{
     }
     draw(){
         ctx.save();
-        if(this.state == 2){ // We're in the menu. The block should be drawn to the right of the game window
+        if(this.state == 1){ // We're in the menu. The block should be drawn to the right of the game window
             ctx.translate(blockSize*24, game.height-15*blockSize);
+        }
+        else if(this.state == 0){
+            ctx.traslate(blockSize*(12+this.x), game.height-blocksize*(20-this.y));
         }
         this.drawTetrimino(); //draw it on the translated point
         ctx.restore();
     }
+    update(){
+        if(this.state == 0){
+            for(var i = 0; i < this.shape.length/2; i++){
+                if(this.shape[i+1]+y >= 20 || grid[this.shape[i]+x][this.shape[i+1]+y] != 0){
+                    this.settle(); // if the space below isn't empty, settle the block where it is.
+                }
+            }
+            this.y++;
+        }
+    }
+    settle(){
+        for(var i = 0; i < this.shape.length/2; i++){
+            grid[this.shape[i]+x][this.shape[i+1]+y] = this.color;
+            remove(this);
+            for(var j = 0; j < tetriminos.length; j++){
+                if(tetriminos[i].state == 1){
+                    tetriminos[i].state = 0;
+                }
+            }
+        }
+    }
 }
 tetriminos.push(new tetrimino(1));
+function remove(item){
+    for(var i = 0; i < tetriminos.length; i++){
+        if(tetriminos[i] == item){
+            tetriminos = tetriminos.slice(0,i-1).concat(tetriminos.slice(i+1,tetriminos.length));
+        }
+    }
+}
