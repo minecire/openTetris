@@ -2,8 +2,8 @@ var game = document.getElementById("game");
 var ctx = game.getContext("2d");
 var blockSize;
 var loop = setInterval(runFrame, 1000/60);
-var rate = 60;
-var timeLeft = 60;
+var rate = 300;
+var timeLeft = 300;
 var tetriminos = [];
 var grid = [10];
 document.addEventListener("keydown",function(event){
