@@ -1,9 +1,15 @@
 var game = document.getElementById("game");
 var ctx = game.getContext("2d");
 var blockSize;
-var loop = setInterval(runFrame, 1000/60);
+var loop = setInterval(runFrame, 1000/6);
 var tetriminos = [];
-var grid = [10][20] = 0;
+var grid = [10];
+for(var i = 0; i < 10; i++){
+    grid[i] = [];
+    for(var j = 0; j < 20; j++){
+        grid[i].push(0);
+    }
+}
 
 function runFrame(){
     game.width = window.innerWidth; //set game window size to browser window size
@@ -77,7 +83,7 @@ class tetrimino{
             ctx.translate(blockSize*24, game.height-15*blockSize);
         }
         else if(this.state == 0){
-            ctx.traslate(blockSize*(12+this.x), game.height-blocksize*(20-this.y));
+            ctx.translate(blockSize*(12+this.x), game.height-blockSize*(20-this.y));
         }
         this.drawTetrimino(); //draw it on the translated point
         ctx.restore();
@@ -85,7 +91,7 @@ class tetrimino{
     update(){
         if(this.state == 0){
             for(var i = 0; i < this.shape.length/2; i++){
-                if(this.shape[i+1]+y >= 20 || grid[this.shape[i]+x][this.shape[i+1]+y] != 0){
+                if(this.shape[i*2+1]+this.y >= 19 || grid[this.shape[i*2]+this.x][this.shape[i*2+1]+this.y] != 0){
                     this.settle(); // if the space below isn't empty, settle the block where it is.
                 }
             }
@@ -94,17 +100,20 @@ class tetrimino{
     }
     settle(){
         for(var i = 0; i < this.shape.length/2; i++){
-            grid[this.shape[i]+x][this.shape[i+1]+y] = this.color;
+            grid[this.shape[i*2]+this.x][this.shape[i*2+1]+this.y] = this.color;
             remove(this);
             for(var j = 0; j < tetriminos.length; j++){
-                if(tetriminos[i].state == 1){
-                    tetriminos[i].state = 0;
+                if(tetriminos[j].state == 1){
+                    tetriminos[j].state = 0;
                 }
             }
+            tetriminos.push(new tetrimino(Math.floor(Math.random()*7)));
         }
     }
 }
-tetriminos.push(new tetrimino(1));
+tetriminos.push(new tetrimino(Math.floor(Math.random()*7)));
+tetriminos.push(new tetrimino(Math.floor(Math.random()*7)));
+tetriminos[0].state = 0;
 function remove(item){
     for(var i = 0; i < tetriminos.length; i++){
         if(tetriminos[i] == item){
