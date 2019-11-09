@@ -1,7 +1,7 @@
 var gridWidth = 10;
 var gridHeight = 25;
 var dropRate = 60;
-var tetriminoOptions = [9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25];
+var tetriminoOptions = [69420];
 
 var gameState = "menu"; // we're in the menu, not the actual game, to start.
 
