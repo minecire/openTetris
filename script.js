@@ -84,12 +84,12 @@ class tetrimino{
             case 1:
                 this.shape = [0,0,0,1,0,2,1,2]; // L Block
                 this.color = "blue";
-                this.center = [0,2];
+                this.center = [0.5,1.5];
                 break;
             case 2:
                 this.shape = [1,0,1,1,1,2,0,2]; // Inverse L Block
                 this.color = "orange";
-                this.center = [1,2];
+                this.center = [0.5,1.5];
                 break;
             case 3:
                 this.shape = [0,0,0,1,0,2,1,1]; // T Block
@@ -99,17 +99,17 @@ class tetrimino{
             case 4:
                 this.shape = [0,0,0,1,1,1,1,2]; // Z Block
                 this.color = "green";
-                this.center = [0,1];
+                this.center = [0.5,1.5];
                 break;
             case 5:
                 this.shape = [1,0,1,1,0,1,0,2]; // Inverse Z Block
                 this.color = "red";
-                this.center = [1,1];
+                this.center = [0.5,1.5];
                 break;
             case 6:
                 this.shape = [0,0,0,1,1,0,1,1]; // Square Block
                 this.color = "yellow";
-                this.center = [1,1];
+                this.center = [0.5,0.5];
                 break;
             default:
                 break;
