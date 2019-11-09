@@ -2,8 +2,8 @@ var game = document.getElementById("game");
 var ctx = game.getContext("2d");
 var blockSize;
 var loop = setInterval(runFrame, 1000/60);
-var rate = 10;
-var timeLeft = 10;
+var rate = 60;
+var timeLeft = 60;
 var tetriminos = [];
 var grid = [10];
 document.addEventListener("keydown",function(event){
@@ -177,6 +177,10 @@ class tetrimino{
     rotate(){
         for(var i = 0; i < this.shape.length/2; i++){
             var rotatedCoords = getRotatedCoords(this.shape[i*2], this.shape[i*2+1], this.center[0], this.center[1]);
+            if(rotatedCoords[0]+this.x < 0 || rotatedCoords[0]+this.x >= grid.length || rotatedCoords[1]+this.y < 0 || rotatedCoords[1]+this.y >= grid[0].length){
+                this.rotateUp();
+                return;
+            }
             if(grid[rotatedCoords[0]+this.x][rotatedCoords[1]+this.y] != 0){
                 this.rotateUp();
                 return;
@@ -191,12 +195,51 @@ class tetrimino{
     rotateUp(){
         for(var i = 0; i < this.shape.length/2; i++){
             var rotatedCoords = getRotatedCoords(this.shape[i*2], this.shape[i*2+1], this.center[0], this.center[1]-1);
+            if(rotatedCoords[0]+this.x < 0 || rotatedCoords[0]+this.x >= grid.length || rotatedCoords[1]+this.y < 0 || rotatedCoords[1]+this.y >= grid[0].length){
+                this.rotateLeft();
+                return;
+            }
             if(grid[rotatedCoords[0]+this.x][rotatedCoords[1]+this.y] != 0){
+                this.rotateLeft();
                 return;
             }
         }
         for(var i = 0; i < this.shape.length/2; i++){
             var rotatedCoords = getRotatedCoords(this.shape[i*2], this.shape[i*2+1], this.center[0], this.center[1]-1);
+            this.shape[i*2] = rotatedCoords[0];
+            this.shape[i*2+1] = rotatedCoords[1];
+        }
+    }
+    rotateLeft(){
+        for(var i = 0; i < this.shape.length/2; i++){
+            var rotatedCoords = getRotatedCoords(this.shape[i*2], this.shape[i*2+1], this.center[0]-1, this.center[1]);
+            if(rotatedCoords[0]+this.x < 0 || rotatedCoords[0]+this.x >= grid.length || rotatedCoords[1]+this.y < 0 || rotatedCoords[1]+this.y >= grid[0].length){
+                this.rotateRight();
+                return;
+            }
+            if(grid[rotatedCoords[0]+this.x][rotatedCoords[1]+this.y] != 0){
+                this.rotateRight();
+                return;
+            }
+        }
+        for(var i = 0; i < this.shape.length/2; i++){
+            var rotatedCoords = getRotatedCoords(this.shape[i*2], this.shape[i*2+1], this.center[0]-1, this.center[1]);
+            this.shape[i*2] = rotatedCoords[0];
+            this.shape[i*2+1] = rotatedCoords[1];
+        }
+    }
+    rotateRight(){
+        for(var i = 0; i < this.shape.length/2; i++){
+            var rotatedCoords = getRotatedCoords(this.shape[i*2], this.shape[i*2+1], this.center[0]+1, this.center[1]);
+            if(rotatedCoords[0]+this.x < 0 || rotatedCoords[0]+this.x >= grid.length || rotatedCoords[1]+this.y < 0 || rotatedCoords[1]+this.y >= grid[0].length){
+                return;
+            }
+            if(grid[rotatedCoords[0]+this.x][rotatedCoords[1]+this.y] != 0){
+                return;
+            }
+        }
+        for(var i = 0; i < this.shape.length/2; i++){
+            var rotatedCoords = getRotatedCoords(this.shape[i*2], this.shape[i*2+1], this.center[0]+1, this.center[1]);
             this.shape[i*2] = rotatedCoords[0];
             this.shape[i*2+1] = rotatedCoords[1];
         }
