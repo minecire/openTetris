@@ -71,180 +71,9 @@ function runFrame(){
 
 class tetrimino{
     constructor(type){
-        switch(type){
-            case 69420:
-                this.shape = [];
-                for(var i = 0; i < Math.floor(Math.random()*20)+2; i++){
-                    this.shape.push(Math.floor(Math.random()*5));
-                    this.shape.push(Math.floor(Math.random()*5));
-                }
-                this.color = "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
-                this.center = [2.5,2.5];
-                break;
-            case -4:
-                this.shape = [0,0,1,1,2,2];
-                this.color = "purple";
-                this.center = [1,1];
-                break;
-            case -3:
-                this.shape = [1,0,0,1,0,2];
-                this.color = "red";
-                this.center = [0.5,0.5];
-                break;
-            case -2:
-                this.shape = [0,0,1,1,1,2];
-                this.color = "green";
-                this.center = [0.5,0.5];
-                break;
-            case -1:
-                this.shape = [0,0,1,1];
-                this.color = "orange";
-                this.center = [0.5,0.5];
-                break;
-            case 0:
-                this.shape = [0,0,0,1];
-                this.color = "cyan";
-                this.center = [0,0];
-                break;
-            case 1:
-                this.shape = [0,0,0,1,0,2];
-                this.color = "cyan";
-                this.center = [0,1];
-                break;
-            case 2:
-                this.shape = [0,0,0,1,1,1];
-                this.color = "orange";
-                this.center = [0.5,0.5];
-                break;
-            case 3:
-                this.shape = [0,0,0,1,0,2,0,3]; // Line Block
-                this.color = "cyan";
-                this.center = [0,2];
-                break;
-            case 4:
-                this.shape = [0,0,0,1,0,2,1,2]; // L Block
-                this.color = "blue";
-                this.center = [0.5,1.5];
-                break;
-            case 5:
-                this.shape = [1,0,1,1,1,2,0,2]; // Inverse L Block
-                this.color = "orange";
-                this.center = [0.5,1.5];
-                break;
-            case 6:
-                this.shape = [0,0,0,1,0,2,1,1]; // T Block
-                this.color = "purple";
-                this.center = [0,1];
-                break;
-            case 7:
-                this.shape = [0,0,0,1,1,1,1,2]; // Z Block
-                this.color = "green";
-                this.center = [0.5,1.5];
-                break;
-            case 8:
-                this.shape = [1,0,1,1,0,1,0,2]; // Inverse Z Block
-                this.color = "red";
-                this.center = [0.5,1.5];
-                break;
-            case 9:
-                this.shape = [0,0,0,1,1,0,1,1]; // Square Block
-                this.color = "yellow";
-                this.center = [0.5,0.5];
-                break;
-            case 10:
-                this.shape = [0,0,0,1,0,2,0,3,0,4];
-                this.color = "cyan";
-                this.center = [0,3];
-                break;
-            case 11:
-                this.shape = [0,0,0,1,0,2,0,3,1,3];
-                this.color = "blue";
-                this.center = [0.5,2.5];
-                break;
-            case 12:
-                this.shape = [1,0,1,1,1,2,1,3,0,3];
-                this.color = "orange";
-                this.center = [0.5,2.5];
-                break;
-            case 13:
-                this.shape = [0,0,0,1,0,2,1,2,2,2];
-                this.color = "magenta";
-                this.center = [0.5,1.5];
-                break;
-            case 14:
-                this.shape = [0,0,0,1,1,0,1,1,0,2];
-                this.color = "yellow";
-                this.center = [0.5,0.5];
-                break;
-            case 15:
-                this.shape = [0,0,0,1,1,0,1,1,1,2];
-                this.color = "purple";
-                this.center = [0.5,0.5];
-                break;
-            case 16:
-                this.shape = [0,0,0,1,1,1,0,2,0,3];
-                this.color = "gray";
-                this.center = [0,1];
-                break;
-            case 17:
-                this.shape = [0,0,0,1,0,2,1,2,0,3];
-                this.color = "white";
-                this.center = [0,2];
-                break;
-            case 18:
-                this.shape = [0,0,2,0,0,1,1,1,2,1];
-                this.color = "green";
-                this.center = [0.5,0.5];
-                break;
-            case 19:
-                this.shape = [0,0,1,0,1,1,2,1,2,2];
-                this.color = "red";
-                this.center = [1,1];
-                break;
-            case 20:
-                this.shape = [0,0,1,0,1,1,1,2,2,2];
-                this.color = "pink";
-                this.center = [1,1];
-                break;
-            case 21:
-                this.shape = [0,0,1,0,1,1,2,1,1,2];
-                this.color = "#AAFF00";
-                this.center = [1,1];
-                break;
-            case 22:
-                this.shape = [1,0,2,0,0,1,1,1,1,2];
-                this.color = "#009900";
-                this.center = [1,1];
-                break;
-            case 23:
-                this.shape = [1,0,0,1,1,1,0,2,0,3];
-                this.color = "#EEAAEE";
-                this.center = [0.5,1.5];
-                break;
-            case 24:
-                this.shape = [0,0,0,1,1,1,1,2,1,3];
-                this.color = "#AAEEAA";
-                this.center = [0.5,1.5];
-                break;
-            case 25:
-                this.shape = [0,0,1,0,2,0,1,1,1,2];
-                this.color = "#550099";
-                this.center = [1,0];
-                break;
-            case 26:
-                this.shape = [0,1,1,0,1,1,1,2,2,1];
-                this.color = "#990055";
-                this.center = [1,1];
-                break;
-            case 27:
-                this.shape = [2,0,1,0,1,1,1,2,0,2];
-                this.color = "#CCEEDD";
-                this.center = [1,1];
-                break;
-            case 28:
-            default:
-                break;
-        }
+        this.shape = setShape(type).shape;
+        this.color = setShape(type).color;
+        this.center = setShape(type).center;
         this.state = 1; //State 1 = menu, 0 = in game falling, 2 = hold
         this.x = 4; //X Position is centered from the 0-9 range, since the width of each block other than line is 2 and 4 is to the left of center, blocks go right
         this.y = 0; //Y Position on top
@@ -258,7 +87,7 @@ class tetrimino{
     draw(){
         ctx.save();
         if(this.state == 1){ // We're in the menu. The block should be drawn to the right of the game window
-            ctx.translate(blockSize*24, game.height-15*blockSize);
+            ctx.translate(blockSize*(14+game.width), game.height-15*blockSize);
         }
         else if(this.state == 0){
             ctx.translate(blockSize*(12+this.x), game.height-blockSize*(gridHeight-this.y));
@@ -305,7 +134,7 @@ class tetrimino{
     }
     moveRight(){
         for(var i = 0; i < this.shape.length/2; i++){
-            if((this.shape[i*2]+this.x >= 10 || grid[this.shape[i*2]+this.x+1][this.shape[i*2+1]+this.y] != 0)){
+            if((this.shape[i*2]+this.x >= gridWidth || grid[this.shape[i*2]+this.x+1][this.shape[i*2+1]+this.y] != 0)){
                 return;
             }
         }
