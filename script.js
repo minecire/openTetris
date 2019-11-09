@@ -12,6 +12,13 @@ document.addEventListener("keydown",function(event){
             }
         }
     }
+    if(event.keyCode == 38){
+        for(var i = 0; i < tetriminos.length; i++){
+            if(tetriminos[i].state == 0){
+                tetriminos[i].rotate();
+            }
+        }
+    }
     if(event.keyCode == 39){
         for(var i = 0; i < tetriminos.length; i++){
             if(tetriminos[i].state == 0){
@@ -19,7 +26,7 @@ document.addEventListener("keydown",function(event){
             }
         }
     }
-    if(event.keyCode == 38){
+    if(event.keyCode == 40){
         for(var i = 0; i < tetriminos.length; i++){
             if(tetriminos[i].state == 0){
                 tetriminos[i].update();
@@ -62,30 +69,37 @@ class tetrimino{
             case 0:
                 this.shape = [0,0,0,1,0,2,0,3]; // Line Block
                 this.color = "cyan";
+                this.center = [0,1.5];
                 break;
             case 1:
                 this.shape = [0,0,0,1,0,2,1,2]; // L Block
                 this.color = "blue";
+                this.center = [0.5,1];
                 break;
             case 2:
                 this.shape = [1,0,1,1,1,2,0,2]; // Inverse L Block
                 this.color = "orange";
+                this.center = [0.5,1];
                 break;
             case 3:
                 this.shape = [0,0,0,1,0,2,1,1]; // T Block
                 this.color = "purple";
+                this.center = [0.5,1];
                 break;
             case 4:
                 this.shape = [0,0,0,1,1,1,1,2]; // Z Block
                 this.color = "green";
+                this.center = [0.5,1];
                 break;
             case 5:
                 this.shape = [1,0,1,1,0,1,0,2]; // Inverse Z Block
                 this.color = "red";
+                this.center = [0.5,1];
                 break;
             case 6:
                 this.shape = [0,0,0,1,1,0,1,1]; // Square Block
                 this.color = "yellow";
+                this.center = [0.5,0.5];
                 break;
             default:
                 break;
@@ -149,6 +163,33 @@ class tetrimino{
             }
         }
         this.x++;
+    }
+    rotate(){
+        for(var i = 0; i < this.shape.length/2; i++){
+            var rotatedCoords = getRotatedCoords(this.shape[i], this.shape[i+1], this.center[0], this.center[1]);
+            if(grid[rotatedCoords[0]+this.x][rotatedCoords[1]+this.y] != 0){
+                rotateUp();
+                return;
+            }
+        }
+        for(var i = 0; i < this.shape.length/2; i++){
+            var rotatedCoords = getRotatedCoords(this.shape[i], this.shape[i+1], this.center[0], this.center[1]);
+            this.shape[i] = rotatedCoords[0];
+            this.shape[i+1] = rotatedCoords[1];
+        }
+    }
+    rotateUp(){
+        for(var i = 0; i < this.shape.length/2; i++){
+            var rotatedCoords = getRotatedCoords(this.shape[i], this.shape[i+1], this.center[0], this.center[1]-1);
+            if(grid[rotatedCoords[0]+this.x][rotatedCoords[1]+this.y] != 0){
+                return;
+            }
+        }
+        for(var i = 0; i < this.shape.length/2; i++){
+            var rotatedCoords = getRotatedCoords(this.shape[i], this.shape[i+1], this.center[0], this.center[1]-1);
+            this.shape[i] = rotatedCoords[0];
+            this.shape[i+1] = rotatedCoords[1];
+        }
     }
 }
 tetriminos.push(new tetrimino(Math.floor(Math.random()*7)));
