@@ -1,7 +1,9 @@
 var game = document.getElementById("game");
 var ctx = game.getContext("2d");
 var blockSize;
-var loop = setInterval(runFrame, 1000/6);
+var loop = setInterval(runFrame, 1000/60);
+var rate = 60;
+var timeLeft = 60;
 var tetriminos = [];
 var grid = [10];
 document.addEventListener("keydown",function(event){
@@ -48,10 +50,14 @@ function runFrame(){
     ctx.fillStyle = "#003366";
     ctx.fillRect(0,0,game.width,game.height);
     ctx.fillStyle = "#000000";
+    timeLeft--;
+    
     ctx.fillRect(blockSize*12, game.height-20*blockSize, blockSize*10, blockSize*20);
     for(var i = 0; i < tetriminos.length; i++){
         tetriminos[i].draw();
-        tetriminos[i].update();
+        if(timeLeft == 0){
+            tetriminos[i].update();
+        }
     }
     for(var i = 0; i < grid.length; i++){
         for(var j = 0; j < grid[i].length; j++){
@@ -61,7 +67,10 @@ function runFrame(){
             }
         }
     }
-    clearLines();
+    if(timeLeft == 0){
+        clearLines();
+        timeLeft = rate;
+    }
 }
 
 class tetrimino{
@@ -75,7 +84,7 @@ class tetrimino{
             case 1:
                 this.shape = [0,0,0,1,0,2,1,2]; // L Block
                 this.color = "blue";
-                this.center = [1,2];
+                this.center = [0,2];
                 break;
             case 2:
                 this.shape = [1,0,1,1,1,2,0,2]; // Inverse L Block
@@ -85,12 +94,12 @@ class tetrimino{
             case 3:
                 this.shape = [0,0,0,1,0,2,1,1]; // T Block
                 this.color = "purple";
-                this.center = [1,2];
+                this.center = [0,1];
                 break;
             case 4:
                 this.shape = [0,0,0,1,1,1,1,2]; // Z Block
                 this.color = "green";
-                this.center = [1,2];
+                this.center = [0,2];
                 break;
             case 5:
                 this.shape = [1,0,1,1,0,1,0,2]; // Inverse Z Block
@@ -169,7 +178,7 @@ class tetrimino{
         for(var i = 0; i < this.shape.length/2; i++){
             var rotatedCoords = getRotatedCoords(this.shape[i*2], this.shape[i*2+1], this.center[0], this.center[1]);
             if(grid[rotatedCoords[0]+this.x][rotatedCoords[1]+this.y] != 0){
-                rotateUp();
+                this.rotateUp();
                 return;
             }
         }
@@ -210,8 +219,8 @@ function remove(item){
 }
 function getRotatedCoords(x, y, centerX, centerY){
     var result = [];
-    result[0] = (y-centerY)+centerX;
-    result[1] = (-x+centerX)+centerY
+    result[0] = (-y+centerY)+centerX;
+    result[1] = (x-centerX)+centerY
     return result;
 }
 function clearLines(){
