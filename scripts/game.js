@@ -6,6 +6,7 @@ var rate;
 var timeLeft;
 var tetriminos;
 var grid;
+var score;
 document.addEventListener("keydown",function(event){
         if(gameState == "game"){
             if(event.keyCode == 37){
@@ -67,6 +68,9 @@ function runFrame(){
         clearLines();
         timeLeft = rate;
     }
+    ctx.fillStyle = "black";
+    ctx.font = "40px Courier";
+    ctx.fillText(score, game.width/30, game.height*2/3);
 }
 
 class tetrimino{
@@ -209,6 +213,7 @@ function getRotatedCoords(x, y, centerX, centerY){
     return result;
 }
 function clearLines(){
+    var totalCleared = 0;
     for(var i = 0; i < grid[0].length; i++){
         var linefull = true;
         for(var j = 0; j < grid.length; j++){
@@ -217,6 +222,7 @@ function clearLines(){
             }
         }
         if(linefull){
+            totalCleared++;
             for(var j = i; j >= 0; j--){
                 for(var k = 0; k < grid.length; k++){
                     if(j > 0){
@@ -228,5 +234,17 @@ function clearLines(){
                 }
             }
         }
+    }
+    if(totalCleared == 1){
+        score += 40;
+    }
+    if(totalCleared == 2){
+        score += 100;
+    }
+    if(totalCleared == 3){
+        score += 300;
+    }
+    if(totalCleared == 4){
+        score += 1200;
     }
 }

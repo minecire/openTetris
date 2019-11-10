@@ -44,6 +44,7 @@ document.addEventListener("mousedown", function(event){
                     }
                 }
             }
+            score = 0;
             gameState = "game";
         }
         if(event.x < window.innerWidth/4 && event.x > window.innerHeight/10 && event.y < game.height/6+15 && event.y > game.height/6-15){
