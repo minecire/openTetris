@@ -2,6 +2,9 @@ var gridWidth = 10;
 var gridHeight = 20;
 var dropRate = 60;
 var tetriminoOptions = tetrOp;
+var density = 7;
+var junkHeight = 12;
+var gameMode = 'A';
 
 var gameState = "menu"; // we're in the menu, not the actual game, to start.
 
@@ -23,6 +26,24 @@ document.addEventListener("mousedown", function(event){
             tetriminos.push(new tetrimino(tetriminoOptions[Math.floor(Math.random()*tetriminoOptions.length)]));
             tetriminos.push(new tetrimino(tetriminoOptions[Math.floor(Math.random()*tetriminoOptions.length)]));
             tetriminos[0].state = 0;
+            if(gameMode == 'B'){
+                for(var i = 0; i < junkHeight*density; i++){
+                    while(true){
+                        var xPos = Math.floor(Math.random()*gridWidth);
+                        var yPos = Math.floor(Math.random()*junkHeight+gridHeight-junkHeight);
+                        var brk = false;
+                        for(var j = 0; j < grid.length; j++){
+                            if(grid[j][yPos] == 0 && j != xPos){  
+                                brk = true;
+                            }
+                        }
+                        if(brk == true && grid[xPos][yPos] == 0){
+                            grid[xPos][yPos] = "#777777";
+                            break;
+                        }
+                    }
+                }
+            }
             gameState = "game";
         }
         if(event.x < window.innerWidth/4 && event.x > window.innerHeight/10 && event.y < game.height/6+15 && event.y > game.height/6-15){
@@ -35,6 +56,34 @@ document.addEventListener("mousedown", function(event){
             var prompted = window.prompt("New height:", gridHeight);
             if(prompted != null){
                 gridHeight = Number(prompted);
+            }
+        }
+        if(event.x > game.width*2/3 && event.x < game.width*7/8 && event.y  > game.height/6-15 && event.y < game.height/6+15){
+            if(gameMode == 'A'){
+                gameMode = 'B';
+            }
+            else{
+                gameMode = 'A';
+            }
+        }
+        if(event.x > game.width*2/3 && event.x < game.width*7/8 && event.y  > game.height/6+15 && event.y < game.height/6+45){
+            var prompted = window.prompt("New density:", density);
+            if(prompted != null){
+                if(prompted >= gridWidth){
+                    density = gridWidth-1;
+                }
+                else{
+                    density = Number(prompted);
+                }
+            }
+        }
+        if(event.x > game.width*2/3 && event.x < game.width*7/8 && event.y  > game.height/6+45 && event.y < game.height/6+75){
+            var prompted = window.prompt("New junk height:", junkHeight);
+            if(prompted != null){
+                if(junkHeight >= gridHeight){
+                    junkHeight = gridHeight-1;
+                }
+                junkHeight = Number(prompted);
             }
         }
     }
@@ -100,6 +149,11 @@ function runMenuFrame(){
     ctx.fillText("Width: "+gridWidth, game.width/10, game.height/6);
     ctx.fillText("Height: "+gridHeight, game.width/10, game.height/6+30);
     ctx.fillText("Piece Types:", game.width/10, game.height/6+70);
+    ctx.fillText("Mode "+gameMode, game.width*2/3, game.height/6);
+    if(gameMode == 'B'){
+        ctx.fillText("Avg. Junk Density: "+density+"/"+gridWidth, game.width*2/3, game.height/6+30);
+        ctx.fillText("Junk Height: "+junkHeight+"/"+gridHeight, game.width*2/3, game.height*1/6+60);
+    }
     for(var i = 0; i < tetriminoOptions.length; i++){
         var display = new tetrimino(tetriminoOptions[i], true);
         display.draw((i%((gridWidth+40)*2/4 - 1))*blockSize*4+game.width/50, game.height/6+110+Math.floor(i / ((gridWidth+40)*2/4 - 1))*blockSize*6);
