@@ -151,7 +151,8 @@ function runMenuFrame(){
     ctx.textAlign = "left";
     ctx.fillText("Width: "+gridWidth, game.width/10, game.height/6);
     ctx.fillText("Height: "+gridHeight, game.width/10, game.height/6+30);
-    ctx.fillText("Piece Types:", game.width/10, game.height/6+70);
+    ctx.fillText("Polymino Types:", game.width/10, game.height/6+70);
+    ctx.fillText("change types with 1 2 3 4 5 6 d t a i l z r", game.width/20, game.height/6+100);
     ctx.fillText("Mode "+gameMode, game.width*2/3, game.height/6);
     if(gameMode == 'B'){
         ctx.fillText("Avg. Junk Density: "+density+"/"+gridWidth, game.width*2/3, game.height/6+30);
@@ -159,6 +160,6 @@ function runMenuFrame(){
     }
     for(var i = 0; i < tetriminoOptions.length; i++){
         var display = new tetrimino(tetriminoOptions[i], true);
-        display.draw((i%((gridWidth+40)*2/4 - 1))*blockSize*4+game.width/50, game.height/6+110+Math.floor(i / ((gridWidth+40)*2/4 - 1))*blockSize*6);
+        display.draw((i%((gridWidth+40)*2/4 - 1))*blockSize*4+game.width/50, game.height/6+120+Math.floor(i / ((gridWidth+40)*2/4 - 1))*blockSize*6);
     }
 }
