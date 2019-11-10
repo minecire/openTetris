@@ -404,7 +404,7 @@ function setShape(type){
             break;
         case 72:
             this.shape = [2,0,0,1,1,1,2,1,0,2,0,3];
-            this.color = "#FFBB00"
+            this.color = "#FFBB00";
             this.center = [1.5,1.5];
             break;
         case 73:

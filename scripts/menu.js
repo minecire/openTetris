@@ -71,7 +71,7 @@ document.addEventListener("keydown", function(event){
         if(event.key == 'i'){
             tetriminoOptions = lineOp;
         }
-        if(event.key = 'l'){
+        if(event.key == 'l'){
             tetriminoOptions = LOp;
         }
         if(event.key == 'r'){

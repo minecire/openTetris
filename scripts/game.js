@@ -202,7 +202,7 @@ function remove(item){
 function getRotatedCoords(x, y, centerX, centerY){
     var result = [];
     result[0] = (-y+centerY)+centerX;
-    result[1] = (x-centerX)+centerY
+    result[1] = (x-centerX)+centerY;
     return result;
 }
 function clearLines(){
