@@ -70,13 +70,14 @@ function runFrame(){
 }
 
 class tetrimino{
-    constructor(type){
+    constructor(type,menu){
         this.shape = setShape(type).shape;
         this.color = setShape(type).color;
         this.center = setShape(type).center;
-        this.state = 1; //State 1 = menu, 0 = in game falling, 2 = hold
+        this.state = 1; //State 1 = upcoming, 0 = in game falling, 2 = hold
         this.x = Math.ceil(gridWidth/2)-1; //X Position is centered from the 0-9 range, since the width of each block other than line is 2 and 4 is to the left of center, blocks go right
         this.y = 0; //Y Position on top
+        this.menu = menu;
     }
     drawTetrimino(){
         for(var i = 0; i < this.shape.length/2; i++){
@@ -84,13 +85,18 @@ class tetrimino{
             ctx.fillRect(this.shape[i*2]*blockSize, (this.shape[i*2+1])*blockSize,blockSize,blockSize);
         }
     }
-    draw(){
+    draw(x, y){
         ctx.save();
-        if(this.state == 1){ // We're in the menu. The block should be drawn to the right of the game window
-            ctx.translate(blockSize*(14+gridWidth), game.height-15*blockSize);
+        if(!this.menu){
+            if(this.state == 1){ // We're in the upcoming pieces. The block should be drawn to the right of the game window
+                ctx.translate(blockSize*(14+gridWidth), game.height-15*blockSize);
+            }
+            else if(this.state == 0){
+                ctx.translate(blockSize*(12+this.x), game.height-blockSize*(gridHeight-this.y));
+            }
         }
-        else if(this.state == 0){
-            ctx.translate(blockSize*(12+this.x), game.height-blockSize*(gridHeight-this.y));
+        else{
+            ctx.translate(x,y);
         }
         this.drawTetrimino(); //draw it on the translated point
         ctx.restore();

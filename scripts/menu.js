@@ -1,7 +1,7 @@
 var gridWidth = 10;
 var gridHeight = 20;
 var dropRate = 60;
-var tetriminoOptions;
+var tetriminoOptions = tetrOp;
 
 var gameState = "menu"; // we're in the menu, not the actual game, to start.
 
@@ -39,12 +39,53 @@ document.addEventListener("mousedown", function(event){
         }
     }
 });
+document.addEventListener("keydown", function(event){
+    if(gameState == "menu"){
+        if(event.key == '6'){
+            tetriminoOptions = hexOp;
+        }
+        if(event.key == '5'){
+            tetriminoOptions = pentOp;
+        }
+        if(event.key == '4'){
+            tetriminoOptions = tetrOp;
+        }
+        if(event.key == '3'){
+            tetriminoOptions = triOp;
+        }
+        if(event.key == '2'){
+            tetriminoOptions = doOp;
+        }
+        if(event.key == '1'){
+            tetriminoOptions = moOp;
+        }
+        if(event.key == 'd'){
+            tetriminoOptions = triDiagOp;
+        }
+        if(event.key == 't'){
+            tetriminoOptions = doDiagOp;
+        }
+        if(event.key == 'a'){
+            tetriminoOptions = allNoDiagOp;
+        }
+        if(event.key == 'i'){
+            tetriminoOptions = lineOp;
+        }
+        if(event.key = 'l'){
+            tetriminoOptions = LOp;
+        }
+        if(event.key == 'r'){
+            tetriminoOptions = randOp;
+        }
+    }
+});
 
 loop = setInterval(runMenuFrame, 1000/60);
 
 function runMenuFrame(){
     game.width = window.innerWidth; //set game window size to browser window size
     game.height = window.innerHeight;
+    blockSize = game.width / (gridWidth+40) / 2; //make the width of a 1x1 space the width of the window / width of grid+40.
     ctx.fillStyle = "#003366";
     ctx.fillRect(0,0,game.width,game.height);
     ctx.fillStyle = "#0088EE";
@@ -58,4 +99,9 @@ function runMenuFrame(){
     ctx.textAlign = "left";
     ctx.fillText("Width: "+gridWidth, game.width/10, game.height/6);
     ctx.fillText("Height: "+gridHeight, game.width/10, game.height/6+30);
+    ctx.fillText("Piece Types:", game.width/10, game.height/6+70);
+    for(var i = 0; i < tetriminoOptions.length; i++){
+        var display = new tetrimino(tetriminoOptions[i], true);
+        display.draw((i%((gridWidth+40)*2/4 - 1))*blockSize*4+game.width/50, game.height/6+110+Math.floor(i / ((gridWidth+40)*2/4 - 1))*blockSize*6);
+    }
 }
