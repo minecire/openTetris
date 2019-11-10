@@ -42,7 +42,7 @@ document.addEventListener("keydown",function(event){
 function runFrame(){
     game.width = window.innerWidth; //set game window size to browser window size
     game.height = window.innerHeight;
-    blockSize = game.width / (gridWidth+40); //make the width of a 1x1 space the width of the window / 50.
+    blockSize = game.width / (gridWidth+40); //make the width of a 1x1 space the width of the window / width of grid+40.
     ctx.fillStyle = "#003366";
     ctx.fillRect(0,0,game.width,game.height);
     ctx.fillStyle = "#000000";
@@ -75,7 +75,7 @@ class tetrimino{
         this.color = setShape(type).color;
         this.center = setShape(type).center;
         this.state = 1; //State 1 = menu, 0 = in game falling, 2 = hold
-        this.x = 4; //X Position is centered from the 0-9 range, since the width of each block other than line is 2 and 4 is to the left of center, blocks go right
+        this.x = Math.ceil(gridWidth/2)-1; //X Position is centered from the 0-9 range, since the width of each block other than line is 2 and 4 is to the left of center, blocks go right
         this.y = 0; //Y Position on top
     }
     drawTetrimino(){
@@ -102,6 +102,7 @@ class tetrimino{
                 if(grid[this.shape[i*2]+this.x][this.shape[i*2+1]+this.y] != 0){
                     gameState = "menu";
                     clearInterval(loop);
+                    loop = setInterval(runMenuFrame,1000/60);
                 }
                 if(this.shape[i*2+1]+this.y > gridHeight || grid[this.shape[i*2]+this.x][this.shape[i*2+1]+this.y+1] != 0){
                     
