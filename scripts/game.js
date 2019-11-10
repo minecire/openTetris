@@ -148,7 +148,7 @@ class tetrimino{
         this.x++;
     }
     rotate(dir){
-        if(dir > 3){
+        if(dir > 4){
             return;
         }
         for(var i = 0; i < this.shape.length/2; i++){
@@ -161,6 +161,9 @@ class tetrimino{
             }
             else if(dir == 3){
                 rotatedCoords[0]++;
+            }
+            else if(dir == 4){
+                rotatedCoords[1]++;
             }
             if(rotatedCoords[0]+this.x < 0 || rotatedCoords[0]+this.x >= grid.length || rotatedCoords[1]+this.y < 0 || rotatedCoords[1]+this.y >= grid[0].length){
                 this.rotate(dir+1);

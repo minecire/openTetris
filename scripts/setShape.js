@@ -6,13 +6,67 @@ var triOp = [2,3];
 var doOp = [1];
 var moOp = [0];
 var doDiagOp = [1,-1];
-var triDiagOp = [2,3,-2,-3,-4];
+var triDiagOp = [2,3,-2,-3,-4,-5];
+var tetrDiagOp = [4,5,6,7,8,9,10,-6,-7,-8,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28];
 var allNoDiagOp = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88];
 var randOp = [69420];
 var lineOp = [0,1,2,4,11,29];
 var LOp = [3,5,6,12,13,30,31];
 var zOp = [8,9];
-
+var shitOp = [-28, -27, -26, -22, -18, -17, -5, 8, 9, 27];
+var blockOp = [0,1,2,4,10,11,29,65];
+document.addEventListener("keydown", function(event){
+    if(gameState == "menu"){
+        if(event.key == '6'){
+            tetriminoOptions = hexOp;
+        }
+        if(event.key == '5'){
+            tetriminoOptions = pentOp;
+        }
+        if(event.key == '4'){
+            tetriminoOptions = tetrOp;
+        }
+        if(event.key == '3'){
+            tetriminoOptions = triOp;
+        }
+        if(event.key == '2'){
+            tetriminoOptions = doOp;
+        }
+        if(event.key == '1'){
+            tetriminoOptions = moOp;
+        }
+        if(event.key == 'd'){
+            tetriminoOptions = triDiagOp;
+        }
+        if(event.key == 't'){
+            tetriminoOptions = doDiagOp;
+        }
+        if(event.key == 'a'){
+            tetriminoOptions = allNoDiagOp;
+        }
+        if(event.key == 'i'){
+            tetriminoOptions = lineOp;
+        }
+        if(event.key == 'l'){
+            tetriminoOptions = LOp;
+        }
+        if(event.key == 'r'){
+            tetriminoOptions = randOp;
+        }
+        if(event.key == 'z'){
+            tetriminoOptions = zOp;
+        }
+        if(event.key == 'f'){
+            tetriminoOptions = tetrDiagOp;
+        }
+        if(event.key == 'x'){
+            tetriminoOptions = shitOp;
+        }
+        if(event.key == 'b'){
+            tetriminoOptions = blockOp;
+        }
+    }
+});
 function setShape(type){
     switch(type){
         case 69420:
@@ -23,6 +77,126 @@ function setShape(type){
             }
             this.color = "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
             this.center = [2.5,2.5];
+            break;
+        case -28:
+            this.shape = [1,0,0,1,1,2,2,1];
+            this.color = "#774400";
+            this.center = [1,1];
+            break;
+        case -27:
+            this.shape = [0,0,1,1,0,2,1,3];
+            this.color = "#FF4400";
+            this.center = [1.5,1.5];
+            break;
+        case -26:
+            this.shape = [1,0,0,1,1,2,0,3];
+            this.color = "#44FF44";
+            this.center = [1.5,1.5];
+            break;
+        case -25:
+            this.shape = [0,0,1,1,2,0,2,2];
+            this.color = "#DD00DD";
+            this.center = [1.5,1.5];
+            break;
+        case -24:
+            this.shape = [2,0,1,1,0,2,1,3];
+            this.color = "#DDDD00";
+            this.center = [2,2];
+            break;
+        case -23:
+            this.shape = [0,0,1,1,2,2,1,3];
+            this.color = "#0000DD";
+            this.center = [2,2];
+            break;
+        case -22:
+            this.shape = [0,0,1,1,2,2,3,3];
+            this.color = "#6600FF";
+            this.center = [2,2];
+            break;
+        case -21:
+            this.shape = [0,0,1,1,1,2,2,3];
+            this.color = "#00BBFF";
+            this.center = [1,2];
+            break;
+        case -20:
+            this.shape = [2,0,1,1,1,2,0,3];
+            this.color = "#FFBB00";
+            this.center = [1,2];
+            break;
+        case -19:
+            this.shape = [1,0,0,1,0,2,1,3];
+            this.color = "#77FFFF";
+            this.center = [1,2];
+            break;
+        case -18:
+            this.shape = [1,0,0,1,2,1,0,2];
+            this.color = "#7777FF";
+            this.center = [1.5,1.5];
+            break;
+        case -17:
+            this.shape = [1,0,0,1,2,1,2,2];
+            this.color = "#FF7777";
+            this.center = [1.5,1.5];
+            break;
+        case -16:
+            this.shape = [1,0,0,1,1,2,1,3];
+            this.color = "#9999EE";
+            this.center = [0,1];
+            break;
+        case -15:
+            this.shape = [0,0,1,1,0,2,0,3];
+            this.color = "#000077";
+            this.center = [0,1];
+            break;
+        case -14:
+            this.shape = [2,0,1,1,0,2,0,3];
+            this.color = "#FF99FF";
+            this.center = [1.5,1.5];
+            break;
+        case -13:
+            this.shape = [0,0,1,1,2,2,2,3];
+            this.color = "#99FF99";
+            this.center = [1.5,1.5];
+            break;
+        case -12:
+            this.shape = [0,0,1,1,2,1,1,2];
+            this.color = "#FFFF77";
+            this.center = [1.5,1.5];
+            break;
+        case -11:
+            this.shape = [0,2,0,1,1,1,2,2];
+            this.color = "#990000";
+            this.center = [1,1];
+            break;
+        case -10:
+            this.shape = [0,0,0,1,1,1,2,0];
+            this.color = "#990099";
+            this.center = [1,1];
+            break;
+        case -9:
+            this.shape = [0,2,0,1,1,1,2,0];
+            this.color = "#009999";
+            this.center = [1,1];
+            break;
+        case -8:
+            this.shape = [0,0,0,1,1,1,2,2];
+            this.color = "#009900";
+            this.center = [1,1];
+            break;
+        case -7:
+            this.shape = [1,0,1,1,1,2,0,3];
+            this.color = "#999900";
+            this.center = [0.5,2.5];
+            break;
+        case -6:
+            this.shape = [0,0,0,1,0,2,1,3];
+            this.color = "magenta";
+            this.center = [0.5,2.5];
+            break;
+        case -5:
+            this.shape = [0,0,1,1,0,2];
+            this.color = "#009999";
+            this.center = [0.5,0.5];
             break;
         case -4:
             this.shape = [0,0,1,1,2,2];

@@ -86,48 +86,11 @@ document.addEventListener("mousedown", function(event){
                 junkHeight = Number(prompted);
             }
         }
-    }
-});
-document.addEventListener("keydown", function(event){
-    if(gameState == "menu"){
-        if(event.key == '6'){
-            tetriminoOptions = hexOp;
-        }
-        if(event.key == '5'){
-            tetriminoOptions = pentOp;
-        }
-        if(event.key == '4'){
-            tetriminoOptions = tetrOp;
-        }
-        if(event.key == '3'){
-            tetriminoOptions = triOp;
-        }
-        if(event.key == '2'){
-            tetriminoOptions = doOp;
-        }
-        if(event.key == '1'){
-            tetriminoOptions = moOp;
-        }
-        if(event.key == 'd'){
-            tetriminoOptions = triDiagOp;
-        }
-        if(event.key == 't'){
-            tetriminoOptions = doDiagOp;
-        }
-        if(event.key == 'a'){
-            tetriminoOptions = allNoDiagOp;
-        }
-        if(event.key == 'i'){
-            tetriminoOptions = lineOp;
-        }
-        if(event.key == 'l'){
-            tetriminoOptions = LOp;
-        }
-        if(event.key == 'r'){
-            tetriminoOptions = randOp;
-        }
-        if(event.key == 'z'){
-            tetriminoOptions = zOp;
+        if(event.x < game.width*2/3 && event.x > game.width*13/30 && event.y  > game.height/6-15 && event.y < game.height/6+15){
+            var prompted = window.prompt("New Drop Rate:", dropRate);
+            if(prompted != null){
+                dropRate = Number(prompted);
+            }
         }
     }
 });
@@ -152,7 +115,8 @@ function runMenuFrame(){
     ctx.fillText("Width: "+gridWidth, game.width/10, game.height/6);
     ctx.fillText("Height: "+gridHeight, game.width/10, game.height/6+30);
     ctx.fillText("Polymino Types:", game.width/10, game.height/6+70);
-    ctx.fillText("change types with 1 2 3 4 5 6 d t a i l z r", game.width/20, game.height/6+100);
+    ctx.fillText("change types with 1 2 3 4 5 6 d t a i l z r f x b", game.width/20, game.height/6+100);
+    ctx.fillText("Rate: "+dropRate, game.width*13/30, game.height/6);
     ctx.fillText("Mode "+gameMode, game.width*2/3, game.height/6);
     if(gameMode == 'B'){
         ctx.fillText("Avg. Junk Density: "+density+"/"+gridWidth, game.width*2/3, game.height/6+30);
