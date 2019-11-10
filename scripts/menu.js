@@ -126,6 +126,9 @@ document.addEventListener("keydown", function(event){
         if(event.key == 'r'){
             tetriminoOptions = randOp;
         }
+        if(event.key == 'z'){
+            tetriminoOptions = zOp;
+        }
     }
 });
 
