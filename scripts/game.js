@@ -8,6 +8,7 @@ var tetriminos;
 var lineCount = 0;
 var grid;
 var score;
+var swappedThisTurn = false;
 document.addEventListener("keydown",function(event){
         if(gameState == "game"){
             if(event.keyCode == 37){
@@ -46,6 +47,45 @@ document.addEventListener("keydown",function(event){
                             tetriminos[i].update();
                         }
                         tetriminos[i].settleWait = 1;
+                    }
+                }
+            }
+            if(event.key == 'a' && !swappedThisTurn){
+                swappedThisTurn = true;
+                var isAHold = false;
+                for(var i = 0; i < tetriminos.length; i++){
+                    if(tetriminos[i].state == -1){
+                        isAHold = true;
+                        tetriminos[i].state = 0;
+                        tetriminos[i].x = Math.ceil(gridWidth/2)-Math.floor(tetriminos[i].center[0]); //X Position is centered from the 0-9 range, since the width of each block other than line is 2 and 4 is to the left of center, blocks go right
+                        tetriminos[i].y = -Math.floor(tetriminos[i].center[1]); //Y Position on top
+                    }
+                    else if(tetriminos[i].state == 0){
+                        tetriminos[i].state = -1;
+                    }
+                    
+                }
+                if(!isAHold){
+                    for(var i = 0; i < tetriminos.length; i++){
+                        if(tetriminos[i].state > 0){
+                            tetriminos[i].state--;
+                        }
+                    }
+                    var option = Math.floor(Math.random()*tetrOpsLeft.length);
+                    tetriminos.push(new tetrimino(tetrOpsLeft[option]));
+                    if(tetrOpsLeft.length < 2){
+                        for(var i = 0; i < tetriminoOptions.length; i++){
+                            tetrOpsLeft[i] = tetriminoOptions[i];
+                        }
+                    }
+                    else if(option == 0){
+                        tetrOpsLeft = tetrOpsLeft.slice(1,tetrOpsLeft.length);
+                    }
+                    else if(option == tetrOpsLeft.length-1){
+                        tetrOpsLeft = tetrOpsLeft.slice(0,tetrOpsLeft.length-1);
+                    }
+                    else{
+                        tetrOpsLeft = tetrOpsLeft.slice(0, option).concat(tetrOpsLeft.slice(option + 1, tetrOpsLeft.length));
                     }
                 }
             }
@@ -110,11 +150,14 @@ class tetrimino{
     draw(x, y){
         ctx.save();
         if(!this.menu){
-            if(this.state == 1){ // We're in the upcoming pieces. The block should be drawn to the right of the game window
-                ctx.translate(blockSize*(14+gridWidth), game.height-15*blockSize);
+            if(this.state > 0){ // We're in the upcoming pieces. The block should be drawn to the right of the game window
+                ctx.translate(blockSize*(14+gridWidth), game.height-20*blockSize+5*blockSize*this.state);
             }
             else if(this.state == 0){
                 ctx.translate(blockSize*(12+this.x), game.height-blockSize*(gridHeight-this.y));
+            }
+            else{
+                ctx.translate(blockSize*6, game.height-blockSize*20);
             }
         }
         else{
@@ -155,6 +198,7 @@ class tetrimino{
         }
     }
     settle(){
+        swappedThisTurn = false;
         for(var i = 0; i < this.shape.length/2; i++){
             grid[this.shape[i*2]+this.x][this.shape[i*2+1]+this.y] = this.color;
         }
