@@ -50,7 +50,7 @@ document.addEventListener("keydown",function(event){
                     }
                 }
             }
-            if(event.key == 'a' && !swappedThisTurn){
+            if(event.key == 'a' && !swappedThisTurn && holdEnabled){
                 swappedThisTurn = true;
                 var isAHold = false;
                 for(var i = 0; i < tetriminos.length; i++){
@@ -135,7 +135,7 @@ class tetrimino{
         this.shape = setShape(type).shape;
         this.color = setShape(type).color;
         this.center = setShape(type).center;
-        this.state = 1; //State 1 = upcoming, 0 = in game falling, 2 = hold
+        this.state = aheadAmount; //State >0 = upcoming, 0 = in game falling, -1 = hold
         this.x = Math.ceil(gridWidth/2)-Math.floor(this.center[0]); //X Position is centered from the 0-9 range, since the width of each block other than line is 2 and 4 is to the left of center, blocks go right
         this.y = -Math.floor(this.center[1]); //Y Position on top
         this.menu = menu;
@@ -204,8 +204,8 @@ class tetrimino{
         }
         remove(this);
         for(var j = 0; j < tetriminos.length; j++){
-            if(tetriminos[j].state == 1){
-                tetriminos[j].state = 0;
+            if(tetriminos[j].state > 0){
+                tetriminos[j].state--;
             }
         }
         var option = Math.floor(Math.random()*tetrOpsLeft.length);

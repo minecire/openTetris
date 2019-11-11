@@ -9,6 +9,8 @@ var junkHeight = 12;
 var gameMode = 'A';
 var tetrMinParts = 2;
 var tetrMaxParts = 9;
+var aheadAmount = 1;
+var holdEnabled = true;
 
 var gameState = "menu"; // we're in the menu, not the actual game, to start.
 
@@ -44,18 +46,21 @@ document.addEventListener("mousedown", function(event){
             } else {
                 tetrOpsLeft = tetrOpsLeft.slice(0, option).concat(tetrOpsLeft.slice(option + 1, tetrOpsLeft.length));
             }
-            option = Math.floor(Math.random() * tetrOpsLeft.length);
-            tetriminos.push(new tetrimino(tetrOpsLeft[option]));
-            if (tetrOpsLeft.length < 2) {
-                for (var i = 0; i < tetriminoOptions.length; i++) {
-                    tetrOpsLeft[i] = tetriminoOptions[i];
+            for(var i = 0; i < aheadAmount; i++){
+                option = Math.floor(Math.random() * tetrOpsLeft.length);
+                tetriminos.push(new tetrimino(tetrOpsLeft[option]));
+                if (tetrOpsLeft.length < 2) {
+                    for (var i = 0; i < tetriminoOptions.length; i++) {
+                        tetrOpsLeft[i] = tetriminoOptions[i];
+                    }
+                } else if (option == 0) {
+                    tetrOpsLeft = tetrOpsLeft.slice(1, tetrOpsLeft.length);
+                } else if (option == tetrOpsLeft.length - 1) {
+                    tetrOpsLeft = tetrOpsLeft.slice(0, tetrOpsLeft.length - 1);
+                } else {
+                    tetrOpsLeft = tetrOpsLeft.slice(0, option).concat(tetrOpsLeft.slice(option + 1, tetrOpsLeft.length));
                 }
-            } else if (option == 0) {
-                tetrOpsLeft = tetrOpsLeft.slice(1, tetrOpsLeft.length);
-            } else if (option == tetrOpsLeft.length - 1) {
-                tetrOpsLeft = tetrOpsLeft.slice(0, tetrOpsLeft.length - 1);
-            } else {
-                tetrOpsLeft = tetrOpsLeft.slice(0, option).concat(tetrOpsLeft.slice(option + 1, tetrOpsLeft.length));
+                tetriminos[tetriminos.length-1].state = i+1;
             }
             tetriminos[0].state = 0;
             if(gameMode == 'B'){
@@ -78,6 +83,15 @@ document.addEventListener("mousedown", function(event){
             }
             score = 0;
             gameState = "game";
+        }
+        if(event.x < window.innerWidth/4 && event.x > window.innerWidth/10 && event.y < game.height/6-45 && event.y > game.height/6-75){
+            var prompted = window.prompt("New amount:", aheadAmount);
+            if(prompted != null){
+                aheadAmount = Number(prompted);
+            }
+        }
+        if(event.x < window.innerWidth/4 && event.x > window.innerWidth/10 && event.y < game.height/6-15 && event.y > game.height/6-45){
+            holdEnabled = !holdEnabled;
         }
         if(event.x < window.innerWidth/4 && event.x > window.innerWidth/10 && event.y < game.height/6+15 && event.y > game.height/6-15){
             var prompted = window.prompt("New width:", gridWidth);
@@ -218,6 +232,8 @@ function runMenuFrame(){
     ctx.fillText("Start Game", game.width/2, game.height*3/4);
     ctx.font = "30px Courier";
     ctx.textAlign = "left";
+    ctx.fillText("Look Ahead Amount: "+aheadAmount, game.width/10, game.height/6-60);
+    ctx.fillText("Enable Hold? "+holdEnabled, game.width/10, game.height/6-30);
     ctx.fillText("Width: "+gridWidth, game.width/10, game.height/6);
     ctx.fillText("Height: "+gridHeight, game.width/10, game.height/6+30);
     ctx.fillText("Polymino Types:", game.width/10, game.height/6+70);
