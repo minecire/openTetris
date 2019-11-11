@@ -97,7 +97,7 @@ document.addEventListener("mousedown", function(event){
                     level = 0;
                 }
                 else if(dropRate > 6){
-                    level = floor(-dropRate/3+16);
+                    level = Math.floor(-dropRate/3+16);
                 }
                 else if(dropRate == 5){
                     level = 10;
