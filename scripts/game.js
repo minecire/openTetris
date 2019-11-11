@@ -164,7 +164,25 @@ class tetrimino{
                 tetriminos[j].state = 0;
             }
         }
-        tetriminos.push(new tetrimino(tetriminoOptions[Math.floor(Math.random()*tetriminoOptions.length)]));
+        var option = Math.floor(Math.random()*tetrOpsLeft.length);
+        tetriminos.push(new tetrimino(tetrOpsLeft[option]));
+        console.log(option);
+        console.log(tetrOpsLeft);
+        if(tetrOpsLeft.length < 2){
+            for(var i = 0; i < tetriminoOptions.length; i++){
+                tetrOpsLeft[i] = tetriminoOptions[i];
+            }
+        }
+        else if(option == 0){
+            tetrOpsLeft = tetrOpsLeft.slice(1,tetrOpsLeft.length);
+        }
+        else if(option == tetrOpsLeft.length-1){
+            tetrOpsLeft = tetrOpsLeft.slice(0,tetrOpsLeft.length-1);
+        }
+        else{
+            tetrOpsLeft = tetrOpsLeft.slice(0, option).concat(tetrOpsLeft.slice(option + 1, tetrOpsLeft.length));
+        }
+        console.log(tetrOpsLeft);
     }
     moveLeft(){
         for(var i = 0; i < this.shape.length/2; i++){

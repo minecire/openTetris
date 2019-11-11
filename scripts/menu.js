@@ -27,8 +27,36 @@ document.addEventListener("mousedown", function(event){
             rate = dropRate;
             timeLeft = dropRate;
             tetriminos = [];
-            tetriminos.push(new tetrimino(tetriminoOptions[Math.floor(Math.random()*tetriminoOptions.length)]));
-            tetriminos.push(new tetrimino(tetriminoOptions[Math.floor(Math.random()*tetriminoOptions.length)]));
+            tetrOpsLeft = [];
+            for(var i = 0; i < tetriminoOptions.length; i++){
+                tetrOpsLeft[i] = tetriminoOptions[i];
+            }
+            var option = Math.floor(Math.random()*tetrOpsLeft.length);
+            tetriminos.push(new tetrimino(tetrOpsLeft[option]));
+            if (tetrOpsLeft.length < 2) {
+                for (var i = 0; i < tetriminoOptions.length; i++) {
+                    tetrOpsLeft[i] = tetriminoOptions[i];
+                }
+            } else if (option == 0) {
+                tetrOpsLeft = tetrOpsLeft.slice(1, tetrOpsLeft.length);
+            } else if (option == tetrOpsLeft.length - 1) {
+                tetrOpsLeft = tetrOpsLeft.slice(0, tetrOpsLeft.length - 1);
+            } else {
+                tetrOpsLeft = tetrOpsLeft.slice(0, option).concat(tetrOpsLeft.slice(option + 1, tetrOpsLeft.length));
+            }
+            option = Math.floor(Math.random() * tetrOpsLeft.length);
+            tetriminos.push(new tetrimino(tetrOpsLeft[option]));
+            if (tetrOpsLeft.length < 2) {
+                for (var i = 0; i < tetriminoOptions.length; i++) {
+                    tetrOpsLeft[i] = tetriminoOptions[i];
+                }
+            } else if (option == 0) {
+                tetrOpsLeft = tetrOpsLeft.slice(1, tetrOpsLeft.length);
+            } else if (option == tetrOpsLeft.length - 1) {
+                tetrOpsLeft = tetrOpsLeft.slice(0, tetrOpsLeft.length - 1);
+            } else {
+                tetrOpsLeft = tetrOpsLeft.slice(0, option).concat(tetrOpsLeft.slice(option + 1, tetrOpsLeft.length));
+            }
             tetriminos[0].state = 0;
             if(gameMode == 'B'){
                 for(var i = 0; i < junkHeight*density; i++){
