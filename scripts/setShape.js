@@ -306,12 +306,12 @@ function setShape(type){
             break;
         case 5:
             this.shape = [0,0,0,1,0,2,1,2]; // L Block
-            this.color = "blue";
+            this.color = "orange";
             this.center = [0.5,1.5];
             break;
         case 6:
             this.shape = [1,0,1,1,1,2,0,2]; // Inverse L Block
-            this.color = "orange";
+            this.color = "blue";
             this.center = [0.5,1.5];
             break;
         case 7:
