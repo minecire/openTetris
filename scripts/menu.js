@@ -7,6 +7,8 @@ var increaseLevel = true;
 var density = 7;
 var junkHeight = 12;
 var gameMode = 'A';
+var tetrMinParts = 2;
+var tetrMaxParts = 9;
 
 var gameState = "menu"; // we're in the menu, not the actual game, to start.
 
@@ -49,16 +51,34 @@ document.addEventListener("mousedown", function(event){
             score = 0;
             gameState = "game";
         }
-        if(event.x < window.innerWidth/4 && event.x > window.innerHeight/10 && event.y < game.height/6+15 && event.y > game.height/6-15){
+        if(event.x < window.innerWidth/4 && event.x > window.innerWidth/10 && event.y < game.height/6+15 && event.y > game.height/6-15){
             var prompted = window.prompt("New width:", gridWidth);
             if(prompted != null){
                 gridWidth = Number(prompted);
             }
         }
-        if(event.x < window.innerWidth/4 && event.x > window.innerHeight/10 && event.y < game.height/6+45 && event.y > game.height/6+15){
+        if(event.x < window.innerWidth/4 && event.x > window.innerWidth/10 && event.y < game.height/6+45 && event.y > game.height/6+15){
             var prompted = window.prompt("New height:", gridHeight);
             if(prompted != null){
                 gridHeight = Number(prompted);
+            }
+        }
+        if(event.x < window.innerWidth/4 && event.x > window.innerWidth/10 && event.y < game.height*3/5+15 && event.y > game.height*3/5-15 && (tetriminoOptions[0] == 1337 || tetriminoOptions[0] == 69420)){
+            var prompted = window.prompt("New minimum:", tetrMinParts);
+            if(prompted != null){
+                tetrMinParts = Number(prompted);
+                if(tetrMinParts > tetrMaxParts){
+                    tetrMaxParts = tetrMinParts;
+                }
+            }
+        }
+        if(event.x < window.innerWidth/4 && event.x > window.innerHeight/10 && event.y < game.height*3/5+45 && event.y > game.height*3/5+15 && (tetriminoOptions[0] == 1337 || tetriminoOptions[0] == 69420)){
+            var prompted = window.prompt("New maximum:", tetrMaxParts);
+            if(prompted != null){
+                tetrMaxParts = Number(prompted);
+                if(tetrMaxParts < tetrMinParts){
+                    tetrMinParts = tetrMaxParts;
+                }
             }
         }
         if(event.x > game.width*2/3 && event.x < game.width*7/8 && event.y  > game.height/6-15 && event.y < game.height/6+15){
@@ -69,7 +89,7 @@ document.addEventListener("mousedown", function(event){
                 gameMode = 'A';
             }
         }
-        if(event.x > game.width*2/3 && event.x < game.width*7/8 && event.y  > game.height/6+15 && event.y < game.height/6+45){
+        if(event.x > game.width*2/3 && event.x < game.width*7/8 && event.y  > game.height/6+15 && event.y < game.height/6+45 && gameMode == 'B'){
             var prompted = window.prompt("New density:", density);
             if(prompted != null){
                 if(prompted >= gridWidth){
@@ -80,7 +100,7 @@ document.addEventListener("mousedown", function(event){
                 }
             }
         }
-        if(event.x > game.width*2/3 && event.x < game.width*7/8 && event.y  > game.height/6+45 && event.y < game.height/6+75){
+        if(event.x > game.width*2/3 && event.x < game.width*7/8 && event.y  > game.height/6+45 && event.y < game.height/6+75 && gameMode == 'B'){
             var prompted = window.prompt("New junk height:", junkHeight);
             if(prompted != null){
                 if(junkHeight >= gridHeight){
@@ -173,6 +193,10 @@ function runMenuFrame(){
     ctx.fillText("Width: "+gridWidth, game.width/10, game.height/6);
     ctx.fillText("Height: "+gridHeight, game.width/10, game.height/6+30);
     ctx.fillText("Polymino Types:", game.width/10, game.height/6+70);
+    if(tetriminoOptions[0] == 1337 || tetriminoOptions[0] == 69420){
+        ctx.fillText("Minimum Parts: "+tetrMinParts, game.width/10, game.height*3/5);
+        ctx.fillText("Maximum Parts: "+tetrMaxParts, game.width/10, game.height*3/5+30);
+    }
     ctx.fillText("change types with 1 2 3 4 5 6 d t a i l z r f x b e", game.width/20, game.height/6+100);
     ctx.fillText("Rate: "+dropRate, game.width*13/30, game.height/6);
     ctx.fillText("(Level: "+level+")", game.width*13/30, game.height/6+30);

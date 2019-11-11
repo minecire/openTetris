@@ -11,6 +11,7 @@ var tetrDiagOp = [4,5,6,7,8,9,10,-6,-7,-8,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18
 var allNoDiagOp = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88];
 var allOp = [-6,-7,-8,-9,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88]
 var randOp = [69420];
+var randPolyOp = [1337];
 var lineOp = [0,1,2,4,11,29];
 var LOp = [3,5,6,12,13,14,30,31,43,44];
 var zOp = [8,9];
@@ -69,18 +70,58 @@ document.addEventListener("keydown", function(event){
         if(event.key == 'e'){
             tetriminoOptions = allOp;
         }
+        if(event.key == 'p'){
+            tetriminoOptions = randPolyOp;
+        }
     }
 });
 function setShape(type){
     switch(type){
         case 69420:
             this.shape = [];
-            for(var i = 0; i < Math.floor(Math.random()*20)+2; i++){
+            var numParts = Math.floor(Math.random()*(tetrMaxParts-tetrMinParts)+tetrMinParts);
+            for(var i = 0; i < numParts; i++){
                 this.shape.push(Math.floor(Math.random()*5));
                 this.shape.push(Math.floor(Math.random()*5));
             }
             this.color = "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
             this.center = [2.5,2.5];
+            break;
+        case 1337:
+            this.shape = [];
+            this.shape.push(10);
+            this.shape.push(10);
+            var numParts = Math.floor(Math.random()*(tetrMaxParts-tetrMinParts)+tetrMinParts);
+            for(var i = 0; i < numParts; i++){
+                var x;
+                var y;
+                while(true){
+                    var noBrk = false;
+                    var brk = false;
+                    x = Math.floor(Math.random()*20);
+                    y = Math.floor(Math.random()*20);
+                    for(var i = 0; i < this.shape.length/2; i++){
+                        if(x == this.shape[i*2] && y == this.shape[i*2+1])
+                            noBrk = true;
+                        if(x == this.shape[i*2]+1 && y == this.shape[i*2+1])
+                            brk = true;
+                        if(x == this.shape[i*2]-1 && y == this.shape[i*2+1])
+                            brk = true;
+                        if(x == this.shape[i*2] && y == this.shape[i*2+1]+1)
+                            brk = true;
+                        if(x == this.shape[i*2] && y == this.shape[i*2+1]-1)
+                            brk = true;
+                        
+                    }
+                    if(brk == true && noBrk == false){
+                        this.shape.push(x);
+                        this.shape.push(y);
+                        break;
+                    }
+                }
+            }
+            this.color = "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
+            this.center = [10,10];
             break;
         case -28:
             this.shape = [1,0,0,1,1,2,2,1];

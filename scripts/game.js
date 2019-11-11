@@ -86,8 +86,8 @@ class tetrimino{
         this.color = setShape(type).color;
         this.center = setShape(type).center;
         this.state = 1; //State 1 = upcoming, 0 = in game falling, 2 = hold
-        this.x = Math.ceil(gridWidth/2)-1; //X Position is centered from the 0-9 range, since the width of each block other than line is 2 and 4 is to the left of center, blocks go right
-        this.y = 0; //Y Position on top
+        this.x = Math.ceil(gridWidth/2)-Math.floor(this.center[0]); //X Position is centered from the 0-9 range, since the width of each block other than line is 2 and 4 is to the left of center, blocks go right
+        this.y = -Math.floor(this.center[1]); //Y Position on top
         this.menu = menu;
         this.settleWait = -1;
     }
@@ -122,11 +122,13 @@ class tetrimino{
             
             for(var i = 0; i < this.shape.length/2; i++){
                 if(grid[this.shape[i*2]+this.x][this.shape[i*2+1]+this.y] != 0){
-                    gameState = "menu";
-                    clearInterval(loop);
-                    loop = setInterval(runMenuFrame,1000/60);
+                    if(this.shape[i*2+1]+this.y >= 0){
+                        gameState = "menu";
+                        clearInterval(loop);
+                        loop = setInterval(runMenuFrame,1000/60);
+                    }
                 }
-                if(this.shape[i*2+1]+this.y > gridHeight || grid[this.shape[i*2]+this.x][this.shape[i*2+1]+this.y+1] != 0){
+                if(this.shape[i*2+1]+this.y > gridHeight || (grid[this.shape[i*2]+this.x][this.shape[i*2+1]+this.y+1] != 0 && this.shape[i*2+1]+this.y >= 0)){
                     if(this.settleWait < 0){
                         this.settleWait = 20;
                     }
@@ -155,7 +157,7 @@ class tetrimino{
     }
     moveLeft(){
         for(var i = 0; i < this.shape.length/2; i++){
-            if((this.shape[i*2]+this.x <= 0 || grid[this.shape[i*2]+this.x-1][this.shape[i*2+1]+this.y] != 0)){
+            if(this.shape[i*2]+this.x <= 0 || (grid[this.shape[i*2]+this.x-1][this.shape[i*2+1]+this.y] != 0 && this.shape[i*2]+this.y > 0)){
                 return;
             }
         }
@@ -163,7 +165,7 @@ class tetrimino{
     }
     moveRight(){
         for(var i = 0; i < this.shape.length/2; i++){
-            if((this.shape[i*2]+this.x >= gridWidth || grid[this.shape[i*2]+this.x+1][this.shape[i*2+1]+this.y] != 0)){
+            if (this.shape[i * 2] + this.x >= gridWidth || (grid[this.shape[i*2]+this.x+1][this.shape[i*2+1]+this.y] != 0 && this.shape[i*2]+this.y > 0)) {
                 return;
             }
         }
@@ -279,15 +281,18 @@ function clearLines(){
         }
     }
     if(totalCleared == 1){
-        score += 40*level;
+        score += 40*level+40;
     }
     if(totalCleared == 2){
-        score += 100*level;
+        score += 100*level+100;
     }
     if(totalCleared == 3){
-        score += 300*level;
+        score += 300*level+300;
     }
     if(totalCleared == 4){
-        score += 1200*level;
+        score += 1200*level+1200;
+    }
+    else{
+        score += totalCleared*totalCleared*totalCleared*100;
     }
 }
