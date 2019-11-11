@@ -5,6 +5,7 @@ var loop;
 var rate;
 var timeLeft;
 var tetriminos;
+var lineCount = 0;
 var grid;
 var score;
 document.addEventListener("keydown",function(event){
@@ -51,6 +52,10 @@ function runFrame(){
     
     ctx.fillRect(blockSize*12, game.height-gridHeight*blockSize, blockSize*gridWidth, blockSize*gridHeight);
     for(var i = 0; i < tetriminos.length; i++){
+        tetriminos[i].settleWait--;
+        if(tetriminos[i].settleWait == 0){
+            tetriminos[i].update();
+        }
         tetriminos[i].draw();
         if(timeLeft == 0){
             tetriminos[i].update();
@@ -71,6 +76,8 @@ function runFrame(){
     ctx.fillStyle = "black";
     ctx.font = "40px Courier";
     ctx.fillText(score, game.width/30, game.height*2/3);
+    ctx.fillText(lineCount + " lines", game.width/30, game.height*2/3+40);
+    ctx.fillText("Level "+level, game.width/30, game.height*2/3+80);
 }
 
 class tetrimino{
@@ -82,6 +89,7 @@ class tetrimino{
         this.x = Math.ceil(gridWidth/2)-1; //X Position is centered from the 0-9 range, since the width of each block other than line is 2 and 4 is to the left of center, blocks go right
         this.y = 0; //Y Position on top
         this.menu = menu;
+        this.settleWait = -1;
     }
     drawTetrimino(){
         for(var i = 0; i < this.shape.length/2; i++){
@@ -106,6 +114,10 @@ class tetrimino{
         ctx.restore();
     }
     update(){
+        if(this.settleWait == 0){
+            this.settle();
+            return;
+        }
         if(this.state == 0){
             
             for(var i = 0; i < this.shape.length/2; i++){
@@ -115,12 +127,18 @@ class tetrimino{
                     loop = setInterval(runMenuFrame,1000/60);
                 }
                 if(this.shape[i*2+1]+this.y > gridHeight || grid[this.shape[i*2]+this.x][this.shape[i*2+1]+this.y+1] != 0){
-                    
-                    this.settle(); // if the space below isn't empty, settle the block where it is.
+                    if(this.settleWait < 0){
+                        this.settleWait = 20;
+                    }
                     return;
                 }
             }
+            this.settleWait = -1;
             this.y++;
+        }
+        if(this.settleWait == 0){
+            this.settle();
+            return;
         }
     }
     settle(){
@@ -223,6 +241,7 @@ function clearLines(){
         }
         if(linefull){
             totalCleared++;
+            lineCount++;
             for(var j = i; j >= 0; j--){
                 for(var k = 0; k < grid.length; k++){
                     if(j > 0){
@@ -233,18 +252,42 @@ function clearLines(){
                     }
                 }
             }
+            if(lineCount % 10 == 0){
+                level++;
+                if(level < 9){
+                    rate = 48-level*3;
+                }
+                else if(level == 9){
+                    rate = 6;
+                }
+                else if(level < 13){
+                    rate = 5;
+                }
+                else if(level < 16){
+                    rate = 4;
+                }
+                else if(level < 19){
+                    rate = 3;
+                }
+                else if(level < 29){
+                    rate = 2;
+                }
+                else{
+                    rate = 1;
+                }
+            }
         }
     }
     if(totalCleared == 1){
-        score += 40;
+        score += 40*level;
     }
     if(totalCleared == 2){
-        score += 100;
+        score += 100*level;
     }
     if(totalCleared == 3){
-        score += 300;
+        score += 300*level;
     }
     if(totalCleared == 4){
-        score += 1200;
+        score += 1200*level;
     }
 }

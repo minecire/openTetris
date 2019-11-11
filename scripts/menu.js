@@ -1,7 +1,9 @@
 var gridWidth = 10;
 var gridHeight = 20;
-var dropRate = 60;
+var dropRate = 48;
+var level = 0;
 var tetriminoOptions = tetrOp;
+var increaseLevel = true;
 var density = 7;
 var junkHeight = 12;
 var gameMode = 'A';
@@ -93,6 +95,36 @@ document.addEventListener("mousedown", function(event){
                 dropRate = Number(prompted);
             }
         }
+        if(event.x < game.width*2/3 && event.x > game.width*13/30 && event.y  > game.height/6+15 && event.y < game.height/6+45){
+            var prompted = window.prompt("New Level:", level);
+            if(prompted != null){
+                level = Number(prompted);
+                if(level < 9){
+                    dropRate = 48-level*3;
+                }
+                else if(level == 9){
+                    dropRate = 6;
+                }
+                else if(level < 13){
+                    dropRate = 5;
+                }
+                else if(level < 16){
+                    dropRate = 4;
+                }
+                else if(level < 19){
+                    dropRate = 3;
+                }
+                else if(level < 29){
+                    dropRate = 2;
+                }
+                else{
+                    dropRate = 1;
+                }
+            }
+        }
+        if(event.x < game.width*2/3 && event.x > game.width*10/30 && event.y  > game.height/6+45 && event.y < game.height/6+75){
+            increaseLevel = !increaseLevel;
+        }
     }
 });
 
@@ -116,8 +148,10 @@ function runMenuFrame(){
     ctx.fillText("Width: "+gridWidth, game.width/10, game.height/6);
     ctx.fillText("Height: "+gridHeight, game.width/10, game.height/6+30);
     ctx.fillText("Polymino Types:", game.width/10, game.height/6+70);
-    ctx.fillText("change types with 1 2 3 4 5 6 d t a i l z r f x b", game.width/20, game.height/6+100);
+    ctx.fillText("change types with 1 2 3 4 5 6 d t a i l z r f x b e", game.width/20, game.height/6+100);
     ctx.fillText("Rate: "+dropRate, game.width*13/30, game.height/6);
+    ctx.fillText("(Level: "+level+")", game.width*13/30, game.height/6+30);
+    ctx.fillText("Gradually increase? "+increaseLevel, game.width*10/30, game.height/6+60);
     ctx.fillText("Mode "+gameMode, game.width*2/3, game.height/6);
     if(gameMode == 'B'){
         ctx.fillText("Avg. Junk Density: "+density+"/"+gridWidth, game.width*2/3, game.height/6+30);
