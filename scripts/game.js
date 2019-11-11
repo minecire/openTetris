@@ -39,6 +39,16 @@ document.addEventListener("keydown",function(event){
                 }
                 clearLines();
             }
+            if(event.keyCode == 32){
+                for(var i = 0; i < tetriminos.length; i++){
+                    if(tetriminos[i].state == 0){
+                        while(tetriminos[i].settleWait < 0){
+                            tetriminos[i].update();
+                        }
+                        tetriminos[i].settleWait = 1;
+                    }
+                }
+            }
         }
         });
 function runFrame(){
@@ -65,7 +75,7 @@ function runFrame(){
         for(var j = 0; j < grid[i].length; j++){
             if(grid[i][j] != 0){
                 ctx.fillStyle = grid[i][j];
-                ctx.fillRect(blockSize*(12+i),game.height-(gridHeight-j)*blockSize, blockSize, blockSize);
+                ctx.fillRect(blockSize*(12+i)+blockSize/40,game.height-(gridHeight-j)*blockSize+blockSize/40, blockSize*19/20, blockSize*19/20);
             }
         }
     }
@@ -94,7 +104,7 @@ class tetrimino{
     drawTetrimino(){
         for(var i = 0; i < this.shape.length/2; i++){
             ctx.fillStyle=this.color;
-            ctx.fillRect(this.shape[i*2]*blockSize, (this.shape[i*2+1])*blockSize,blockSize,blockSize);
+            ctx.fillRect(this.shape[i*2]*blockSize+blockSize/20, (this.shape[i*2+1])*blockSize+blockSize/20,blockSize*9/10,blockSize*9/10);
         }
     }
     draw(x, y){
@@ -114,12 +124,8 @@ class tetrimino{
         ctx.restore();
     }
     update(){
-        if(this.settleWait == 0){
-            this.settle();
-            return;
-        }
         if(this.state == 0){
-            
+            var resetWait = true;
             for(var i = 0; i < this.shape.length/2; i++){
                 if(grid[this.shape[i*2]+this.x][this.shape[i*2+1]+this.y] != 0){
                     if(this.shape[i*2+1]+this.y >= 0){
@@ -131,12 +137,17 @@ class tetrimino{
                 if(this.shape[i*2+1]+this.y > gridHeight || (grid[this.shape[i*2]+this.x][this.shape[i*2+1]+this.y+1] != 0 && this.shape[i*2+1]+this.y >= 0)){
                     if(this.settleWait < 0){
                         this.settleWait = 20;
+                        return;
                     }
-                    return;
+                    resetWait = false;
                 }
             }
-            this.settleWait = -1;
-            this.y++;
+            if(resetWait){
+                this.settleWait = -1;
+            }
+            if(this.settleWait < 0){
+                this.y++;
+            }
         }
         if(this.settleWait == 0){
             this.settle();
