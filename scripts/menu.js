@@ -93,7 +93,29 @@ document.addEventListener("mousedown", function(event){
             var prompted = window.prompt("New Drop Rate:", dropRate);
             if(prompted != null){
                 dropRate = Number(prompted);
+                if(dropRate > 48){
+                    level = 0;
+                }
+                else if(dropRate > 6){
+                    level = floor(-dropRate/3+16);
+                }
+                else if(dropRate == 5){
+                    level = 10;
+                }
+                else if(dropRate == 4){
+                    level = 13;
+                }
+                else if(dropRate == 3){
+                    level = 16;
+                }
+                else if(dropRate == 2){
+                    level = 19;
+                }
+                else if(dropRate == 1){
+                    level = 29;
+                }
             }
+            
         }
         if(event.x < game.width*2/3 && event.x > game.width*13/30 && event.y  > game.height/6+15 && event.y < game.height/6+45){
             var prompted = window.prompt("New Level:", level);

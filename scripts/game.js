@@ -57,7 +57,7 @@ function runFrame(){
             tetriminos[i].update();
         }
         tetriminos[i].draw();
-        if(timeLeft == 0){
+        if(timeLeft == 1){
             tetriminos[i].update();
         }
     }
