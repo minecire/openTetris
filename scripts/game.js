@@ -166,8 +166,6 @@ class tetrimino{
         }
         var option = Math.floor(Math.random()*tetrOpsLeft.length);
         tetriminos.push(new tetrimino(tetrOpsLeft[option]));
-        console.log(option);
-        console.log(tetrOpsLeft);
         if(tetrOpsLeft.length < 2){
             for(var i = 0; i < tetriminoOptions.length; i++){
                 tetrOpsLeft[i] = tetriminoOptions[i];
@@ -182,7 +180,6 @@ class tetrimino{
         else{
             tetrOpsLeft = tetrOpsLeft.slice(0, option).concat(tetrOpsLeft.slice(option + 1, tetrOpsLeft.length));
         }
-        console.log(tetrOpsLeft);
     }
     moveLeft(){
         for(var i = 0; i < this.shape.length/2; i++){
@@ -237,6 +234,9 @@ class tetrimino{
             }
             else if(dir == 3){
                 rotatedCoords[0]++;
+            }
+            else if(dir == 4){
+                rotatedCoords[1]++;
             }
             this.shape[i*2] = rotatedCoords[0];
             this.shape[i*2+1] = rotatedCoords[1];
