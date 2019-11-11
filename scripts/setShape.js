@@ -81,6 +81,22 @@ function setShape(type){
             this.shape = [];
             var numParts = Math.floor(Math.random()*(tetrMaxParts-tetrMinParts)+tetrMinParts);
             for(var i = 0; i < numParts; i++){
+                var x;
+                var y;
+                while(true){
+                    var noBrk = false;
+                    x = Math.floor(Math.random()*5);
+                    y = Math.floor(Math.random()*5);
+                    for(var i = 0; i < this.shape.length/2; i++){
+                        if(x == this.shape[i*2] && y == this.shape[i*2+1])
+                            noBrk = true;
+                    }
+                    if(noBrk == false){
+                        this.shape.push(x);
+                        this.shape.push(y);
+                        break;
+                    }
+                }
                 this.shape.push(Math.floor(Math.random()*5));
                 this.shape.push(Math.floor(Math.random()*5));
             }
