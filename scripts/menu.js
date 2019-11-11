@@ -114,6 +114,9 @@ document.addEventListener("mousedown", function(event){
                 else if(dropRate == 1){
                     level = 29;
                 }
+                else{
+                    level = 0;
+                }
             }
             
         }
