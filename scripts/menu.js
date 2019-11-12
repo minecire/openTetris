@@ -82,6 +82,7 @@ document.addEventListener("mousedown", function(event){
                 }
             }
             score = 0;
+            lineCount = 0;
             gameState = "game";
         }
         if(event.x < window.innerWidth/4 && event.x > window.innerWidth/10 && event.y < game.height/6-45 && event.y > game.height/6-75){
