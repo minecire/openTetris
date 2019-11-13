@@ -11,6 +11,7 @@ var tetrMinParts = 2;
 var tetrMaxParts = 9;
 var aheadAmount = 1;
 var holdEnabled = true;
+var startLevel = 0;
 
 var gameState = "menu"; // we're in the menu, not the actual game, to start.
 
@@ -35,34 +36,37 @@ document.addEventListener("mousedown", function(event){
             }
             var option = Math.floor(Math.random()*tetrOpsLeft.length);
             tetriminos.push(new tetrimino(tetrOpsLeft[option]));
-            if (tetrOpsLeft.length < 2) {
-                for (var i = 0; i < tetriminoOptions.length; i++) {
-                    tetrOpsLeft[i] = tetriminoOptions[i];
-                }
-            } else if (option == 0) {
+            if (option == 0) {
                 tetrOpsLeft = tetrOpsLeft.slice(1, tetrOpsLeft.length);
             } else if (option == tetrOpsLeft.length - 1) {
                 tetrOpsLeft = tetrOpsLeft.slice(0, tetrOpsLeft.length - 1);
             } else {
                 tetrOpsLeft = tetrOpsLeft.slice(0, option).concat(tetrOpsLeft.slice(option + 1, tetrOpsLeft.length));
             }
+            if (tetrOpsLeft.length < 1) {
+                for (var i = 0; i < tetriminoOptions.length; i++) {
+                    tetrOpsLeft.push(tetriminoOptions[i]);
+                }
+            }
             for(var i = 0; i < aheadAmount; i++){
                 option = Math.floor(Math.random() * tetrOpsLeft.length);
                 tetriminos.push(new tetrimino(tetrOpsLeft[option]));
-                if (tetrOpsLeft.length < 2) {
-                    for (var i = 0; i < tetriminoOptions.length; i++) {
-                        tetrOpsLeft[i] = tetriminoOptions[i];
-                    }
-                } else if (option == 0) {
+                if (option == 0) {
                     tetrOpsLeft = tetrOpsLeft.slice(1, tetrOpsLeft.length);
                 } else if (option == tetrOpsLeft.length - 1) {
                     tetrOpsLeft = tetrOpsLeft.slice(0, tetrOpsLeft.length - 1);
                 } else {
                     tetrOpsLeft = tetrOpsLeft.slice(0, option).concat(tetrOpsLeft.slice(option + 1, tetrOpsLeft.length));
                 }
+                if (tetrOpsLeft.length < 1) {
+                    for (var j = 0; j < tetriminoOptions.length; j++) {
+                        tetrOpsLeft.push(tetriminoOptions[i]);
+                    }
+                }
                 tetriminos[tetriminos.length-1].state = i+1;
             }
             tetriminos[0].state = 0;
+            console.log(tetriminos);
             if(gameMode == 'B'){
                 for(var i = 0; i < junkHeight*density; i++){
                     while(true){
@@ -81,6 +85,7 @@ document.addEventListener("mousedown", function(event){
                     }
                 }
             }
+            level = startLevel;
             score = 0;
             lineCount = 0;
             gameState = "game";
@@ -157,52 +162,52 @@ document.addEventListener("mousedown", function(event){
             if(prompted != null){
                 dropRate = Number(prompted);
                 if(dropRate > 48){
-                    level = 0;
+                    startLevel = 0;
                 }
-                else if(dropRate > 6){
-                    level = Math.floor(-dropRate/3+16);
+                else if(dropRate >= 6){
+                    startLevel = Math.floor(-dropRate/5+10);
                 }
                 else if(dropRate == 5){
-                    level = 10;
+                    startLevel = 10;
                 }
                 else if(dropRate == 4){
-                    level = 13;
+                    startLevel = 13;
                 }
                 else if(dropRate == 3){
-                    level = 16;
+                    startLevel = 16;
                 }
                 else if(dropRate == 2){
-                    level = 19;
+                    startLevel = 19;
                 }
                 else if(dropRate == 1){
-                    level = 29;
+                    startLevel = 29;
                 }
                 else{
-                    level = 0;
+                    startLevel = 0;
                 }
             }
             
         }
         if(event.x < game.width*2/3 && event.x > game.width*13/30 && event.y  > game.height/6+15 && event.y < game.height/6+45){
-            var prompted = window.prompt("New Level:", level);
+            var prompted = window.prompt("New Level:", startLevel);
             if(prompted != null){
-                level = Number(prompted);
-                if(level < 9){
-                    dropRate = 48-level*3;
+                startLevel = Number(prompted);
+                if(startLevel < 9){
+                    dropRate = 48-startLevel*5;
                 }
-                else if(level == 9){
+                else if(startLevel == 9){
                     dropRate = 6;
                 }
-                else if(level < 13){
+                else if(startLevel < 13){
                     dropRate = 5;
                 }
-                else if(level < 16){
+                else if(startLevel < 16){
                     dropRate = 4;
                 }
-                else if(level < 19){
+                else if(startLevel < 19){
                     dropRate = 3;
                 }
-                else if(level < 29){
+                else if(startLevel < 29){
                     dropRate = 2;
                 }
                 else{
@@ -244,7 +249,7 @@ function runMenuFrame(){
     }
     ctx.fillText("change types with 1 2 3 4 5 6 d t a i l z r f x b e", game.width/20, game.height/6+100);
     ctx.fillText("Rate: "+dropRate, game.width*13/30, game.height/6);
-    ctx.fillText("(Level: "+level+")", game.width*13/30, game.height/6+30);
+    ctx.fillText("(Level: "+startLevel+")", game.width*13/30, game.height/6+30);
     ctx.fillText("Gradually increase? "+increaseLevel, game.width*10/30, game.height/6+60);
     ctx.fillText("Mode "+gameMode, game.width*2/3, game.height/6);
     if(gameMode == 'B'){

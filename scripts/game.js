@@ -210,19 +210,17 @@ class tetrimino{
         }
         var option = Math.floor(Math.random()*tetrOpsLeft.length);
         tetriminos.push(new tetrimino(tetrOpsLeft[option]));
-        if(tetrOpsLeft.length < 2){
-            for(var i = 0; i < tetriminoOptions.length; i++){
-                tetrOpsLeft[i] = tetriminoOptions[i];
-            }
-        }
-        else if(option == 0){
-            tetrOpsLeft = tetrOpsLeft.slice(1,tetrOpsLeft.length);
-        }
-        else if(option == tetrOpsLeft.length-1){
-            tetrOpsLeft = tetrOpsLeft.slice(0,tetrOpsLeft.length-1);
-        }
-        else{
+        if (option == 0) {
+            tetrOpsLeft = tetrOpsLeft.slice(1, tetrOpsLeft.length);
+        } else if (option == tetrOpsLeft.length - 1) {
+            tetrOpsLeft = tetrOpsLeft.slice(0, tetrOpsLeft.length - 1);
+        } else {
             tetrOpsLeft = tetrOpsLeft.slice(0, option).concat(tetrOpsLeft.slice(option + 1, tetrOpsLeft.length));
+        }
+        if (tetrOpsLeft.length < 1) {
+            for (var i = 0; i < tetriminoOptions.length; i++) {
+                tetrOpsLeft.push(tetriminoOptions[i]);
+            }
         }
     }
     moveLeft(){
@@ -330,7 +328,7 @@ function clearLines(){
             if(lineCount % 10 == 0){
                 level++;
                 if(level < 9){
-                    rate = 48-level*3;
+                    rate = 48-level*5;
                 }
                 else if(level == 9){
                     rate = 6;
