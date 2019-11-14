@@ -12,6 +12,7 @@ var tetrMaxParts = 9;
 var aheadAmount = 1;
 var holdEnabled = true;
 var startLevel = 0;
+var toggleDrawBag = true;
 
 var gameState = "menu"; // we're in the menu, not the actual game, to start.
 
@@ -34,21 +35,7 @@ document.addEventListener("mousedown", function(event){
             for(var i = 0; i < tetriminoOptions.length; i++){
                 tetrOpsLeft[i] = tetriminoOptions[i];
             }
-            var option = Math.floor(Math.random()*tetrOpsLeft.length);
-            tetriminos.push(new tetrimino(tetrOpsLeft[option]));
-            if (option == 0) {
-                tetrOpsLeft = tetrOpsLeft.slice(1, tetrOpsLeft.length);
-            } else if (option == tetrOpsLeft.length - 1) {
-                tetrOpsLeft = tetrOpsLeft.slice(0, tetrOpsLeft.length - 1);
-            } else {
-                tetrOpsLeft = tetrOpsLeft.slice(0, option).concat(tetrOpsLeft.slice(option + 1, tetrOpsLeft.length));
-            }
-            if (tetrOpsLeft.length < 1) {
-                for (var i = 0; i < tetriminoOptions.length; i++) {
-                    tetrOpsLeft.push(tetriminoOptions[i]);
-                }
-            }
-            for(var i = 0; i < aheadAmount; i++){
+            if(toggleDrawBag){
                 option = Math.floor(Math.random() * tetrOpsLeft.length);
                 tetriminos.push(new tetrimino(tetrOpsLeft[option]));
                 if (option == 0) {
@@ -64,6 +51,31 @@ document.addEventListener("mousedown", function(event){
                     }
                 }
                 tetriminos[tetriminos.length-1].state = i+1;
+            }
+            else{
+                tetriminos.push(new tetrimino(tetriminoOptions[Math.floor(Math.random()*tetriminoOptions.length)]));
+            }
+            for(var i = 0; i < aheadAmount; i++){
+                if(toggleDrawBag){
+                    option = Math.floor(Math.random() * tetrOpsLeft.length);
+                    tetriminos.push(new tetrimino(tetrOpsLeft[option]));
+                    if (option == 0) {
+                        tetrOpsLeft = tetrOpsLeft.slice(1, tetrOpsLeft.length);
+                    } else if (option == tetrOpsLeft.length - 1) {
+                        tetrOpsLeft = tetrOpsLeft.slice(0, tetrOpsLeft.length - 1);
+                    } else {
+                        tetrOpsLeft = tetrOpsLeft.slice(0, option).concat(tetrOpsLeft.slice(option + 1, tetrOpsLeft.length));
+                    }
+                    if (tetrOpsLeft.length < 1) {
+                        for (var j = 0; j < tetriminoOptions.length; j++) {
+                            tetrOpsLeft.push(tetriminoOptions[i]);
+                        }
+                    }
+                    tetriminos[tetriminos.length-1].state = i+1;
+                }
+                else{
+                    tetriminos.push(new tetrimino(tetriminoOptions[Math.floor(Math.random()*tetriminoOptions.length)]));
+                }
             }
             tetriminos[0].state = 0;
             console.log(tetriminos);
@@ -128,6 +140,9 @@ document.addEventListener("mousedown", function(event){
                     tetrMinParts = tetrMaxParts;
                 }
             }
+        }
+        if(event.x > game.width*2/3 && event.x < game.width*7/8 && event.y  > game.height/6-45 && event.y < game.height/6-15){
+            toggleDrawBag = !toggleDrawBag;
         }
         if(event.x > game.width*2/3 && event.x < game.width*7/8 && event.y  > game.height/6-15 && event.y < game.height/6+15){
             if(gameMode == 'A'){
@@ -251,6 +266,7 @@ function runMenuFrame(){
     ctx.fillText("Rate: "+dropRate, game.width*13/30, game.height/6);
     ctx.fillText("(Level: "+startLevel+")", game.width*13/30, game.height/6+30);
     ctx.fillText("Gradually increase? "+increaseLevel, game.width*10/30, game.height/6+60);
+    ctx.fillText("Draw Bag?"+toggleDrawBag, game.width*2/3, game.height/6-30);
     ctx.fillText("Mode "+gameMode, game.width*2/3, game.height/6);
     if(gameMode == 'B'){
         ctx.fillText("Avg. Junk Density: "+density+"/"+gridWidth, game.width*2/3, game.height/6+30);
