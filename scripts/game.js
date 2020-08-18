@@ -209,7 +209,7 @@ class tetrimino{
             }
         }
         if(toggleDrawBag){
-            option = Math.floor(Math.random() * tetrOpsLeft.length);
+            var option = Math.floor(Math.random() * tetrOpsLeft.length);
             tetriminos.push(new tetrimino(tetrOpsLeft[option]));
             if (option == 0) {
                 tetrOpsLeft = tetrOpsLeft.slice(1, tetrOpsLeft.length);
