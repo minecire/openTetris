@@ -220,10 +220,9 @@ class tetrimino{
             }
             if (tetrOpsLeft.length < 1) {
                 for (var j = 0; j < tetriminoOptions.length; j++) {
-                    tetrOpsLeft.push(tetriminoOptions[i]);
+                    tetrOpsLeft.push(tetriminoOptions[j]);
                 }
             }
-            tetriminos[tetriminos.length-1].state = i+1;
         }
         else{
             tetriminos.push(new tetrimino(tetriminoOptions[Math.floor(Math.random()*tetriminoOptions.length)]));
